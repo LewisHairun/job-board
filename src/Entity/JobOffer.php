@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\JobOfferRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -40,6 +42,26 @@ class JobOffer
 
     #[ORM\Column]
     private ?\DateTimeImmutable $publicationDate = null;
+
+    #[ORM\ManyToOne(inversedBy: 'jobOffers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
+    #[ORM\ManyToOne(inversedBy: 'jobOffers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?JobBranch $jobBranch = null;
+
+    #[ORM\ManyToOne(inversedBy: 'jobOffers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Recruiter $recruiter = null;
+
+    #[ORM\OneToMany(mappedBy: 'jobOffer', targetEntity: CandidateJobOffer::class)]
+    private Collection $candidateJobOffers;
+
+    public function __construct()
+    {
+        $this->candidateJobOffers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +172,72 @@ class JobOffer
     public function setPublicationDate(\DateTimeImmutable $publicationDate): static
     {
         $this->publicationDate = $publicationDate;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getJobBranch(): ?JobBranch
+    {
+        return $this->jobBranch;
+    }
+
+    public function setJobBranch(?JobBranch $jobBranch): static
+    {
+        $this->jobBranch = $jobBranch;
+
+        return $this;
+    }
+
+    public function getRecruiter(): ?Recruiter
+    {
+        return $this->recruiter;
+    }
+
+    public function setRecruiter(?Recruiter $recruiter): static
+    {
+        $this->recruiter = $recruiter;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CandidateJobOffer>
+     */
+    public function getCandidateJobOffers(): Collection
+    {
+        return $this->candidateJobOffers;
+    }
+
+    public function addCandidateJobOffer(CandidateJobOffer $candidateJobOffer): static
+    {
+        if (!$this->candidateJobOffers->contains($candidateJobOffer)) {
+            $this->candidateJobOffers->add($candidateJobOffer);
+            $candidateJobOffer->setJobOffer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCandidateJobOffer(CandidateJobOffer $candidateJobOffer): static
+    {
+        if ($this->candidateJobOffers->removeElement($candidateJobOffer)) {
+            // set the owning side to null (unless already changed)
+            if ($candidateJobOffer->getJobOffer() === $this) {
+                $candidateJobOffer->setJobOffer(null);
+            }
+        }
 
         return $this;
     }
