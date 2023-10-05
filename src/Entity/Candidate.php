@@ -6,9 +6,11 @@ use App\Repository\CandidateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: CandidateRepository::class)]
-class Candidate
+class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,8 +38,8 @@ class Candidate
     #[ORM\Column]
     private ?float $salaryRange = null;
 
-    #[ORM\Column]
-    private array $role = [];
+    #[ORM\Column()]
+    private array $roles = [];
 
     #[ORM\Column(nullable: true)]
     private ?bool $isActivated = null;
@@ -99,6 +101,9 @@ class Candidate
         return $this;
     }
 
+    /**
+    * @see PasswordAuthenticatedUserInterface
+    */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -147,14 +152,21 @@ class Candidate
         return $this;
     }
 
-    public function getRole(): array
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->role;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_RECRUITER
+        $roles[] = 'ROLE_CANDIDATE';
+
+        return array_unique($roles);
     }
 
-    public function setRole(array $role): static
+    public function setRoles(array $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -235,5 +247,24 @@ class Candidate
         }
 
         return $this;
+    }
+
+    /**
+    * @see UserInterface
+    */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+    * A visual identifier that represents this user.
+    *
+    * @see UserInterface
+    */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 }

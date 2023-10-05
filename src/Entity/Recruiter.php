@@ -6,9 +6,11 @@ use App\Repository\RecruiterRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: RecruiterRepository::class)]
-class Recruiter
+class Recruiter implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,8 +32,8 @@ class Recruiter
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?array $role = null;
+    #[ORM\Column()]
+    private array $roles = [];
 
     #[ORM\OneToMany(mappedBy: 'recruiter', targetEntity: JobOffer::class)]
     private Collection $jobOffers;
@@ -82,6 +84,9 @@ class Recruiter
         return $this;
     }
 
+    /**
+    * @see PasswordAuthenticatedUserInterface
+    */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -106,17 +111,25 @@ class Recruiter
         return $this;
     }
 
-    public function getRole(): ?array
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->role;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_RECRUITER
+        $roles[] = 'ROLE_RECRUITER';
+
+        return array_unique($roles);
     }
 
-    public function setRole(?array $role): static
+    public function setRoles(array $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
+
 
     /**
      * @return Collection<int, JobOffer>
@@ -146,5 +159,24 @@ class Recruiter
         }
 
         return $this;
+    }
+
+    /**
+    * @see UserInterface
+    */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+    * A visual identifier that represents this user.
+    *
+    * @see UserInterface
+    */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 }
