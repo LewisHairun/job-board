@@ -1,22 +1,47 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("css/app.css") }}">
+    <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
+{% endblock %}
 
 {% block body %}
-<div class="container-fluid mt-3 mb-5">
-    <div>
-        {% include "partials/_search.html.twig" %}
-    </div>
-    {% for lastestJobOffer in lastestJobOffers %}
-        <div class="mb-2 p-3 w-75 shadow">
-            <h5 class="text-primary">{{ lastestJobOffer.title is defined ? lastestJobOffer.title : "" }}</h5>
-            <h6 class="text-success">{{ lastestJobOffer.type is defined ? lastestJobOffer.type : "" }}</h6>
-            <div>
-                <p>{{ lastestJobOffer.description is defined ? lastestJobOffer.description : "" }}</p>
-            </div>
+    <div class="container-fluid mt-3 mb-5">
+        <div>
+            {% include "partials/_search.html.twig" %}
         </div>
-    {% else %}
-        <div class="alert-info">Il n'y a pas d'offre</div>
-    {% endfor %}
-</div>
+        <div class="mt-3">
+            {% include "home/_job_offer_filter.html.twig" %}
+        </div>
+        <div>
+            <a href="{{ path('app_home') }}" class="btn btn-md btn-primary">Réinitialiser</a>
+        </div>
+        {% for lastestJobOffer in lastestJobOffers %}
+            <div class="mb-2 p-3 w-75 shadow">
+                <h5 class="text-primary">{{ lastestJobOffer.title is defined ? lastestJobOffer.title : "" }} | <span class="text-secondary h6">{{ lastestJobOffer.cityName is defined ? lastestJobOffer.cityName : "" }}</span></h5> 
+                <h6 class="text-danger">{{ lastestJobOffer.jobBranchName is defined ? lastestJobOffer.jobBranchName : "" }}</h6>
+                <h6 class="text-success">{{ lastestJobOffer.type is defined ? lastestJobOffer.type : "" }}</h6>
+                <div>
+                    <p>{{ lastestJobOffer.description is defined ? lastestJobOffer.description : "" }}</p>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert-info">Il n'y a pas d'offre</div>
+        {% endfor %}
+        <div class="pagination d-flex justify-content-center">
+            {{ knp_pagination_render(lastestJobOffers) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
+    <script src="{{ asset("plugins/select2/js/select2.min.js") }}"></script>
+    <script>
+        const placeholder_branch = "--Selectionner un branche --";
+        const placeholder_ordering_city = "--Trier la ville --";
+        const placeholder_ordering_job_offer = "--Trier l'offre --";
+    </script>
+    <script src="{{ asset("js/select-two-filter-home.js") }}"></script>
 {% endblock %}

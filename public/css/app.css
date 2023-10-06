@@ -1,0 +1,7 @@
+form[name="job_offer_filter"] {
+    display: grid; 
+    /* align-items: center;
+    justify-content: center; */
+    grid-template-columns: repeat(6, 400px);
+    gap: 0.5rem;
+}
