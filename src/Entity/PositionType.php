@@ -21,9 +21,13 @@ class PositionType
     #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: Candidate::class)]
     private Collection $candidates;
 
+    #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: JobOffer::class)]
+    private Collection $jobOffers;
+
     public function __construct()
     {
         $this->candidates = new ArrayCollection();
+        $this->jobOffers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,6 +71,36 @@ class PositionType
             // set the owning side to null (unless already changed)
             if ($candidate->getPositionType() === $this) {
                 $candidate->setPositionType(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, JobOffer>
+     */
+    public function getJobOffers(): Collection
+    {
+        return $this->jobOffers;
+    }
+
+    public function addJobOffer(JobOffer $jobOffer): static
+    {
+        if (!$this->jobOffers->contains($jobOffer)) {
+            $this->jobOffers->add($jobOffer);
+            $jobOffer->setPositionType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJobOffer(JobOffer $jobOffer): static
+    {
+        if ($this->jobOffers->removeElement($jobOffer)) {
+            // set the owning side to null (unless already changed)
+            if ($jobOffer->getPositionType() === $this) {
+                $jobOffer->setPositionType(null);
             }
         }
 
