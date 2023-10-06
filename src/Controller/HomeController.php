@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\SearchType;
 use App\Repository\JobOfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -14,10 +16,20 @@ class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $lastestJobOffers = $this->jobOfferRepository->findBy([], ["publicationDate" => "desc"], 6);
+        $lastestJobOffers = $this->jobOfferRepository->findLatestJobOffers();
+        $formSearch = $this->createForm(SearchType::class);
+        $formSearch->handleRequest($request);
 
-        return $this->render('home/index.html.twig', compact('lastestJobOffers'));
+        if ($formSearch->isSubmitted()) {
+            $keyword = $formSearch->get("keyword")->getData();
+            $lastestJobOffers = $this->jobOfferRepository->findLatestJobOffers($keyword);   
+        }
+
+        return $this->render('home/index.html.twig', [
+            'lastestJobOffers' => $lastestJobOffers,
+            'formSearch' => $formSearch
+        ]);
     }
 }

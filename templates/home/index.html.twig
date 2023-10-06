@@ -3,23 +3,20 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-    <div class="container-fluid mt-3">
-        <div class="row">
-            {% for lastestJobOffer in lastestJobOffers %}
-                <div class="col-md-12 mb-2 px-3 py-3">
-                    <div class="w-75 shadow">
-                        <h5 class="text-primary">{{ lastestJobOffer.title }}</h5>
-                        <div>
-                        <p>{{ lastestJobOffer.description }}</p>
-                        </div>
-                        <div>
-                            {{ lastestJobOffer.description }}
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="alert-info">Il n'y a pas d'offre</div>
-            {% endfor %}
-        </div>
+<div class="container-fluid mt-3 mb-5">
+    <div>
+        {% include "partials/_search.html.twig" %}
     </div>
+    {% for lastestJobOffer in lastestJobOffers %}
+        <div class="mb-2 p-3 w-75 shadow">
+            <h5 class="text-primary">{{ lastestJobOffer.title is defined ? lastestJobOffer.title : "" }}</h5>
+            <h6 class="text-success">{{ lastestJobOffer.type is defined ? lastestJobOffer.type : "" }}</h6>
+            <div>
+                <p>{{ lastestJobOffer.description is defined ? lastestJobOffer.description : "" }}</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert-info">Il n'y a pas d'offre</div>
+    {% endfor %}
+</div>
 {% endblock %}

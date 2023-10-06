@@ -1,10 +1,7 @@
 <div class="mt-3 d-flex justify-content-center align-items-center">
-    <form class="row g-3 w-25" novalidate>
+    {{ form_start(formSearch, {"attr": {"class": "w-25", "novalidate": true}}) }}
         <div class="input-group">
-        <input type="text" class="form-control" id="validationCustomUsername" 
-                aria-describedby="inputGroupPrepend"
-                placeholder="Entrez un mot clé"
-        >
+        {{ form_widget(formSearch.keyword) }}
         <button type="submit" class="btn btn-success">Rechercher</button>
-    </form>
+    {{ form_end(formSearch) }}
 </div>

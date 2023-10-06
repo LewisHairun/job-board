@@ -21,28 +21,28 @@ class JobOfferRepository extends ServiceEntityRepository
         parent::__construct($registry, JobOffer::class);
     }
 
-//    /**
-//     * @return JobOffer[] Returns an array of JobOffer objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('j')
-//            ->andWhere('j.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('j.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return JobOffer[] Returns an array of JobOffer objects
+    */
+   public function findLatestJobOffers(string $keyword = null): array
+   {
+        $query = $this->createQueryBuilder('jo')
+                        ->addSelect('jo.title', 'jo.description', 'pt.type') 
+                        ->leftJoin('jo.positionType', 'pt'); 
 
-//    public function findOneBySomeField($value): ?JobOffer
-//    {
-//        return $this->createQueryBuilder('j')
-//            ->andWhere('j.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if ($keyword) {
+            $query->orWhere('jo.title LIKE :keyword')
+                    ->orWhere('jo.description LIKE :keyword')
+                    ->orWhere('pt.type LIKE :keyword')
+                    ->setParameter('keyword', '%' . $keyword . '%');
+        } 
+                        
+       return 
+           
+           $query->orderBy('jo.publicationDate', "DESC")
+           ->setMaxResults(6)
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 }
