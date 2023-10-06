@@ -35,12 +35,6 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 120, nullable: true)]
     private ?string $degree = null;
 
-    #[ORM\Column]
-    private ?float $minSalary = null;
-
-    #[ORM\Column]
-    private ?float $maxSalary = null;
-
     #[ORM\Column()]
     private array $roles = [];
 
@@ -139,30 +133,6 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDegree(?string $degree): static
     {
         $this->degree = $degree;
-
-        return $this;
-    }
-
-    public function getMinSalary(): ?float
-    {
-        return $this->minSalary;
-    }
-
-    public function setMinSalary(float $minSalary): static
-    {
-        $this->minSalary = $minSalary;
-
-        return $this;
-    }
-
-    public function getMaxSalary(): ?float
-    {
-        return $this->maxSalary;
-    }
-
-    public function setMaxSalary(float $maxSalary): static
-    {
-        $this->maxSalary = $maxSalary;
 
         return $this;
     }
