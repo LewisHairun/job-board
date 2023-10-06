@@ -1,20 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/project/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/project/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
+<div class="container-fluid mt-3 mb-5">
+    <div>
+        {% include "partials/_search.html.twig" %}
+    </div>
+    {% for lastestJobOffer in lastestJobOffers %}
+        <div class="mb-2 p-3 w-75 shadow">
+            <h5 class="text-primary">{{ lastestJobOffer.title is defined ? lastestJobOffer.title : "" }}</h5>
+            <h6 class="text-success">{{ lastestJobOffer.type is defined ? lastestJobOffer.type : "" }}</h6>
+            <div>
+                <p>{{ lastestJobOffer.description is defined ? lastestJobOffer.description : "" }}</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert-info">Il n'y a pas d'offre</div>
+    {% endfor %}
 </div>
 {% endblock %}

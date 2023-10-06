@@ -2,25 +2,34 @@
 
 namespace App\Controller;
 
-use App\Entity\City;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Form\SearchType;
+use App\Repository\JobOfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
-    public function index(EntityManagerInterface $manager): Response
+    public function __construct(private JobOfferRepository $jobOfferRepository)
     {
-        $entity = new City;
-            $entity->setName("ato");
+    }
 
-            $manager->persist($entity);
-            $manager->flush();
-            
+    #[Route('/', name: 'app_home')]
+    public function index(Request $request): Response
+    {
+        $lastestJobOffers = $this->jobOfferRepository->findLatestJobOffers();
+        $formSearch = $this->createForm(SearchType::class);
+        $formSearch->handleRequest($request);
+
+        if ($formSearch->isSubmitted()) {
+            $keyword = $formSearch->get("keyword")->getData();
+            $lastestJobOffers = $this->jobOfferRepository->findLatestJobOffers($keyword);   
+        }
+
         return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
+            'lastestJobOffers' => $lastestJobOffers,
+            'formSearch' => $formSearch
         ]);
     }
 }

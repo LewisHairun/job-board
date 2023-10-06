@@ -157,8 +157,6 @@ class AppFixtures extends Fixture
             $candidate->setPicture(null);
             $candidate->setPassword($password);
             $candidate->setDegree($degrees[array_rand($degrees)]);
-            $candidate->setMinSalary($faker->numberBetween(50000, 70000) / 100);
-            $candidate->setMaxSalary($faker->numberBetween(70000, 90000) / 100);
             $candidate->setRoles(["ROLE_CANDIDATE"]);
             $candidate->setIsActivated(rand(0, 1));
             $candidate->setPositionType($positionType);
@@ -178,8 +176,7 @@ class AppFixtures extends Fixture
             $jobOffer = new JobOffer;
             $positionType = $this->positionTypeRepository->findOneBy(["type" => $this->positionTypesData[array_rand($this->positionTypesData)]->getType()]);
             $title = "Poste de " . $positionType->getType();
-            $slug = $this->slugger->slug($title);
-            $place = $this->cityRepository->findOneBy(["name" => $this->citiesData[array_rand($this->citiesData)]->getName()])->getName();
+            $slug = strtolower($this->slugger->slug($title));
             $longitude = $faker->longitude(-180, 180);
             $latitude = $faker->latitude(-90, 90);
             $expiringDate = (new \DateTime())->modify("+ 30 days");
@@ -187,12 +184,14 @@ class AppFixtures extends Fixture
             $city = $this->cityRepository->findOneBy(["name" => $this->citiesData[array_rand($this->citiesData)]->getName()]);
             $jobBranch = $this->jobBranchRepository->findOneBy(["name" => $this->jobBranchesData[array_rand($this->jobBranchesData)]->getName()]);
             $recruiter = $this->recruiterRepository->findOneBy(["email" => $this->recruitersData[array_rand($this->recruitersData)]->getEmail()]);
+            $positionType = $this->positionTypeRepository->findOneBy(["type" => $this->positionTypesData[array_rand($this->positionTypesData)]->getType()]);
 
             $jobOffer->setTitle($title);
             $jobOffer->setSlug($slug);
             $jobOffer->setDescription($faker->text(300));
             $jobOffer->setIsActivated(rand(0, 1));
-            $jobOffer->setPlace($place);
+            $jobOffer->setMinSalary($faker->numberBetween(50000, 70000) / 100);
+            $jobOffer->setMaxSalary($faker->numberBetween(70000, 90000) / 100);
             $jobOffer->setLongitude($longitude);
             $jobOffer->setLatitude($latitude);
             $jobOffer->setExpiringDate($expiringDate);
@@ -200,6 +199,7 @@ class AppFixtures extends Fixture
             $jobOffer->setCity($city);
             $jobOffer->setJobBranch($jobBranch);
             $jobOffer->setRecruiter($recruiter);
+            $jobOffer->setPositionType($positionType);
 
             $manager->persist($jobOffer);
 
@@ -275,7 +275,7 @@ class AppFixtures extends Fixture
         $legalNotice = new LegalNotice;
         $faker = Factory::create('fr_FR');
         $content = <<<EOD
-            Conditions Générales de Vente de Job Board
+            <p class="text-center">Conditions Générales de Vente de Job Board</p>
 
             Date d'effet : 05/10/23
             
