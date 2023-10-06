@@ -27,22 +27,63 @@ class JobOfferRepository extends ServiceEntityRepository
    public function findLatestJobOffers(string $keyword = null): array
    {
         $query = $this->createQueryBuilder('jo')
-                        ->addSelect('jo.title', 'jo.description', 'pt.type') 
-                        ->leftJoin('jo.positionType', 'pt'); 
+                        ->addSelect('jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
+                        ->leftJoin('jo.city', 'c')
+                        ->leftJoin('jo.positionType', 'pt')
+                        ->leftJoin('jo.jobBranch', 'jb'); 
 
         if ($keyword) {
-            $query->orWhere('jo.title LIKE :keyword')
-                    ->orWhere('jo.description LIKE :keyword')
-                    ->orWhere('pt.type LIKE :keyword')
-                    ->setParameter('keyword', '%' . $keyword . '%');
+            $query
+                ->orWhere('jo.title LIKE :keyword')
+                ->orWhere('jo.description LIKE :keyword')
+                ->orWhere('pt.type LIKE :keyword')
+                ->setParameter('keyword', '%' . $keyword . '%');
         } 
                         
-       return 
-           
-           $query->orderBy('jo.publicationDate', "DESC")
-           ->setMaxResults(6)
-           ->getQuery()
-           ->getResult()
-       ;
+       return $query
+                ->orderBy('jo.publicationDate', "DESC")
+                ->getQuery()
+                ->getResult();
+   }
+
+   public function filterJobOffer($jobOfferFilter, string $orderingCity = "desc", string $orderingJobOffer = "desc"): array
+   {
+        $query = $this->createQueryBuilder('jo')
+                        ->addSelect('jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
+                        ->leftJoin('jo.city', 'c')
+                        ->leftJoin('jo.positionType', 'pt')
+                        ->leftJoin("jo.jobBranch", "jb"); 
+
+        if ($jobOfferFilter->getMinSalary() && $jobOfferFilter->getMaxSalary() ) {
+            $query
+                ->andWhere("jo.minSalary >= :minSalary")
+                ->andWhere("jo.maxSalary >= :maxSalary")
+                ->setParameter("minSalary", $jobOfferFilter->getMinSalary())
+                ->setParameter("maxSalary", $jobOfferFilter->getMaxSalary());
+        } 
+
+        if ($jobOfferFilter->getJobBranch()) {
+            $query 
+                ->orWhere("jb.name LIKE :name")
+                ->setParameter("name", "%" . $jobOfferFilter->getJobBranch()->getName() . "%");
+        }
+
+        $orderingCity = "desc";
+
+        if ($jobOfferFilter->getOrderingCity()) {
+            $orderingCity = $jobOfferFilter->getOrderingCity();
+            $query->orderBy("c.name", $orderingCity);
+        } 
+
+        $orderingJobOffer = "desc";
+
+        if ($jobOfferFilter->getOrderingJobOffer()) {
+            $orderingJobOffer = $jobOfferFilter->getOrderingJobOffer();
+            $query->orderBy("jo.publicationDate", $orderingJobOffer);
+        }
+
+        return $query
+                ->getQuery()
+                ->getResult();
    }
 }
