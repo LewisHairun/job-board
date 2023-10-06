@@ -28,8 +28,11 @@ class JobOffer
     #[ORM\Column(nullable: true)]
     private ?bool $isActivated = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $place = null;
+    #[ORM\Column]
+    private ?float $minSalary = null;
+
+    #[ORM\Column]
+    private ?float $maxSalary = null;
 
     #[ORM\Column]
     private ?float $longitude = null;
@@ -57,6 +60,10 @@ class JobOffer
 
     #[ORM\OneToMany(mappedBy: 'jobOffer', targetEntity: CandidateJobOffer::class)]
     private Collection $candidateJobOffers;
+
+    #[ORM\ManyToOne(inversedBy: 'jobOffers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?PositionType $positionType = null;
 
     public function __construct()
     {
@@ -116,14 +123,26 @@ class JobOffer
         return $this;
     }
 
-    public function getPlace(): ?string
+    public function getMinSalary(): ?float
     {
-        return $this->place;
+        return $this->minSalary;
     }
 
-    public function setPlace(string $place): static
+    public function setMinSalary(float $minSalary): static
     {
-        $this->place = $place;
+        $this->minSalary = $minSalary;
+
+        return $this;
+    }
+
+    public function getMaxSalary(): ?float
+    {
+        return $this->maxSalary;
+    }
+
+    public function setMaxSalary(float $maxSalary): static
+    {
+        $this->maxSalary = $maxSalary;
 
         return $this;
     }
@@ -238,6 +257,18 @@ class JobOffer
                 $candidateJobOffer->setJobOffer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPositionType(): ?PositionType
+    {
+        return $this->positionType;
+    }
+
+    public function setPositionType(?PositionType $positionType): static
+    {
+        $this->positionType = $positionType;
 
         return $this;
     }
