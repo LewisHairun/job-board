@@ -275,7 +275,7 @@ class AppFixtures extends Fixture
         $legalNotice = new LegalNotice;
         $faker = Factory::create('fr_FR');
         $content = <<<EOD
-            Conditions Générales de Vente de Job Board
+            <p class="text-center">Conditions Générales de Vente de Job Board</p>
 
             Date d'effet : 05/10/23
             

@@ -2,25 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\City;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\JobOfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
-    public function index(EntityManagerInterface $manager): Response
+    public function __construct(private JobOfferRepository $jobOfferRepository)
     {
-        $entity = new City;
-            $entity->setName("ato");
+    }
 
-            $manager->persist($entity);
-            $manager->flush();
-            
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+    #[Route('/', name: 'app_home')]
+    public function index(): Response
+    {
+        $lastestJobOffers = $this->jobOfferRepository->findBy([], ["publicationDate" => "desc"], 6);
+
+        return $this->render('home/index.html.twig', compact('lastestJobOffers'));
     }
 }
