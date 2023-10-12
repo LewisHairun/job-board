@@ -273,43 +273,20 @@ class AppFixtures extends Fixture
     public function loadLegalNotice(ObjectManager $manager): void
     {
         $legalNotice = new LegalNotice;
-        $faker = Factory::create('fr_FR');
         $content = <<<EOD
-            <p class="text-center">Conditions Générales de Vente de Job Board</p>
+            <div>
+                <h2 style="text-align:center;"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Mention legale</strong></h2>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <strong>Date d'effet</strong> : 05/10/23<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>
+                
+                1. Objet</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Les présentes Conditions Générales de Vente (ci-après les "CGV") régissent les relations contractuelles entre Job Board 
+                (ci-après le "Site") et toute personne utilisant les services de recherche d'emploi proposés sur le Site (ci-après "l'Utilisateur"). 
+                Toute utilisation du Site implique l'acceptation pleine et entière des CGV par l'Utilisateur.
+                <br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>
 
-            Date d'effet : 05/10/23
-            
-            1. Objet
-            
-            Les présentes Conditions Générales de Vente (ci-après les "CGV") régissent les relations contractuelles entre Job Board (ci-après le "Site") et toute personne utilisant les services de recherche d'emploi proposés sur le Site (ci-après "l'Utilisateur"). Toute utilisation du Site implique l'acceptation pleine et entière des CGV par l'Utilisateur.
-            
-            2. Services Proposés
-            
-            Le Site propose des services de recherche d'emploi, y compris la publication d'offres d'emploi, la consultation de profils de candidats, et d'autres fonctionnalités liées à la recherche d'emploi.
-            
-            3. Responsabilités
-            
-            Le Site ne peut garantir l'exactitude des informations publiées par les utilisateurs. L'Utilisateur est seul responsable du contenu des offres d'emploi publiées et des informations incluses dans son profil. Le Site ne peut être tenu responsable des dommages directs ou indirects causés par l'utilisation des services proposés.
-            
-            4. Tarifs et Paiement
-            
-            L'utilisation de base du Site est gratuite pour les Utilisateurs. Cependant, des services premium peuvent être proposés moyennant des frais additionnels. Les tarifs et modalités de paiement des services premium sont indiqués sur le Site et peuvent être modifiés à tout moment.
-            
-            5. Protection des Données Personnelles
-            
-            Le Site collecte et traite les données personnelles des Utilisateurs conformément à sa Politique de Confidentialité. L'Utilisateur accepte cette collecte et ce traitement de ses données personnelles.
-            
-            6. Propriété Intellectuelle
-            
-            Le Site et son contenu sont protégés par les lois sur la propriété intellectuelle. Toute reproduction, distribution ou utilisation non autorisée du contenu du Site est strictement interdite.
-            
-            7. Modification des CGV
-            
-            Le Site se réserve le droit de modifier les présentes CGV à tout moment. Les Utilisateurs seront informés des modifications via le Site. L'utilisation continue du Site après modification des CGV constitue l'acceptation de ces modifications.
-            
-            8. Droit Applicable et Juridiction
-            
-            Les présentes CGV sont soumises au droit en vigueur. En cas de litige, les tribunaux compétents seront ceux du lieu du siège social de Job Board.
+                2. Services Proposés</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                Le Site propose des services de recherche d'emploi, y compris la publication d'offres d'emploi, 
+                la consultation de profils de candidats, et d'autres fonctionnalités liées à la recherche d'emploi.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong> 3. Responsabilités</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le Site ne peut garantir l'exactitude des informations publiées par les utilisateurs. L'Utilisateur est seul responsable du contenu des offres d'emploi publiées et des informations incluses dans son profil. Le Site ne peut être tenu responsable des dommages directs ou indirects causés par l'utilisation des services proposés.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>4. Tarifs et Paiement</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;L'utilisation de base du Site est gratuite pour les Utilisateurs. Cependant, des services premium peuvent être proposés moyennant des frais additionnels. Les tarifs et modalités de paiement des services premium sont indiqués sur le Site et peuvent être modifiés à tout moment.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>5. Protection des Données Personnelles</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le Site collecte et traite les données personnelles des Utilisateurs conformément à sa Politique de Confidentialité. L'Utilisateur accepte cette collecte et ce traitement de ses données personnelles.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>6. Propriété Intellectuelle</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le Site et son contenu sont protégés par les lois sur la propriété intellectuelle. Toute reproduction, distribution ou utilisation non autorisée du contenu du Site est strictement interdite.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>7. Modification des CGV</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le Site se réserve le droit de modifier les présentes CGV à tout moment. Les Utilisateurs seront informés des modifications via le Site. L'utilisation continue du Site après modification des CGV constitue l'acceptation de ces modifications.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>8. Droit Applicable et Juridiction</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Les présentes CGV sont soumises au droit en vigueur. En cas de litige, les tribunaux compétents seront ceux du lieu du siège social de Job Board.<br>&nbsp; &nbsp; &nbsp;</p></div>
         EOD;
 
         $legalNotice->setContent($content);
@@ -321,49 +298,18 @@ class AppFixtures extends Fixture
     public function loadGeneralTerm(ObjectManager $manager): void
     {
         $generalTerm = new GeneralTerm;
-        $faker = Factory::create('fr_FR');
         $content = <<<EOD
-            1. Identité de l'éditeur
-
-            Le présent site est édité par la société [Nom de la société], société par actions simplifiée au capital de [montant du capital], immatriculée au registre du commerce et des sociétés de [ville] sous le numéro [numéro SIREN], dont le siège social est situé [adresse du siège social].
-            
-            2. Contact
-            
-            Pour toute question ou demande d'information, vous pouvez nous contacter :
-            
-            Par téléphone au [numéro de téléphone]
-            Par e-mail à l'adresse [adresse e-mail]
-            3. Hébergement
-            
-            Le présent site est hébergé par la société [Nom de l'hébergeur], dont le siège social est situé [adresse du siège social].
-            
-            4. Utilisation du site
-            
-            L'utilisation du présent site est soumise aux conditions générales d'utilisation disponibles sur le site.
-            
-            5. Propriété intellectuelle
-            
-            L'ensemble des éléments composant le présent site, notamment la structure, les textes, les images, les sons, les vidéos, les logiciels, sont la propriété exclusive de la société [Nom de la société] ou de ses partenaires. Toute reproduction, représentation, diffusion ou exploitation, à titre commercial ou non, de l'ensemble ou d'une partie de ces éléments, sans l'autorisation expresse de la société [Nom de la société], est interdite et constitue une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.
-            
-            6. Données personnelles
-            
-            Les informations recueillies sur le présent site font l'objet d'un traitement informatique destiné à la gestion des candidatures. Ce traitement est nécessaire à l'exécution des prestations proposées par la société [Nom de la société].
-            
-            Conformément à la loi « Informatique et libertés » du 6 janvier 1978, vous disposez d'un droit d'accès, de rectification et de suppression des informations vous concernant. Vous pouvez exercer ce droit en nous contactant par e-mail à l'adresse [adresse e-mail] ou par courrier à l'adresse [adresse postale].
-            
-            7. Cookies
-            
-            Le présent site utilise des cookies. Les cookies sont des fichiers texte qui sont déposés sur votre ordinateur lorsque vous visitez un site internet. Ils permettent à un site internet de se souvenir de vos actions et de vos préférences (par exemple, votre langue, votre taille de police, vos couleurs préférées, etc.) au cours d'une session de navigation.
-            
-            Vous pouvez refuser l'utilisation des cookies en modifiant les paramètres de votre navigateur. Toutefois, certaines fonctionnalités du présent site peuvent être altérées si vous désactivez les cookies.
-            
-            8. Liens hypertextes
-            
-            Le présent site peut contenir des liens hypertextes vers d'autres sites internet. La société [Nom de la société] n'exerce aucun contrôle sur ces sites et ne saurait être tenue responsable de leur contenu.
-            
-            9. Droit applicable
-            
-            Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.
+            <div>
+                <h2 style="text-align:center;"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Conditions Générales de Vente de Job Board</strong></h2>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                    <strong>1. Identité de l'éditeur</strong>
+                </p>
+                <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le présent site est édité par la société 
+                <strong>JobBoard</strong>, société par actions simplifiée au capital de 500 000, 
+                immatriculée au registre du commerce et des sociétés de Tana sous le numéro 21541848215, 
+                dont le siège social est situé Tana.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+                &nbsp;<strong>2. Contact</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Pour toute question ou demande d'information, vous pouvez nous contacter :<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Par téléphone au 12484848<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Par e-mail à l'adresse contact@job-board.com</p><p><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong> 3. Hébergement</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le présent site est hébergé par la société [Nom de l'hébergeur], dont le siège social est situé [adresse du siège social].<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>4. Utilisation du site</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;L'utilisation du présent site est soumise aux conditions générales d'utilisation disponibles sur le site.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>5. Propriété intellectuelle</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;L'ensemble des éléments composant le présent site, notamment la structure, les textes, les images, les sons, les vidéos, les logiciels, sont la propriété exclusive de la société [Nom de la société] ou de ses partenaires. Toute reproduction, représentation, diffusion ou exploitation, à titre commercial ou non, de l'ensemble ou d'une partie de ces éléments, sans l'autorisation expresse de la société [Nom de la société], est interdite et constitue une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong> 6. Données personnelles</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Les informations recueillies sur le présent site font l'objet d'un traitement informatique destiné à la gestion des candidatures. Ce traitement est nécessaire à l'exécution des prestations proposées par la société [Nom de la société].<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Conformément à la loi « Informatique et libertés » du 6 janvier 1978, vous disposez d'un droit d'accès, de rectification et de suppression des informations vous concernant. Vous pouvez exercer ce droit en nous contactant par e-mail à l'adresse [adresse e-mail] ou par courrier à l'adresse [adresse postale].<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<strong> &nbsp; 7. Cookies</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le présent site utilise des cookies. Les cookies sont des fichiers texte qui sont déposés sur votre ordinateur lorsque vous visitez un site internet. Ils permettent à un site internet de se souvenir de vos actions et de vos préférences (par exemple, votre langue, votre taille de police, vos couleurs préférées, etc.) au cours d'une session de navigation.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Vous pouvez refuser l'utilisation des cookies en modifiant les paramètres de votre navigateur. Toutefois, certaines fonctionnalités du présent site peuvent être altérées si vous désactivez les cookies.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>8. Liens hypertextes</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Le présent site peut contenir des liens hypertextes vers d'autres sites internet. La société [Nom de la société] n'exerce aucun contrôle sur ces sites et ne saurait être tenue responsable de leur contenu.<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong> &nbsp;9. Droit applicable</strong><br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Les présentes mentions légales sont régies par le droit français. En cas de litige, les tribunaux français seront seuls compétents.</p>
+            </div>
         EOD;
 
         $generalTerm->setContent($content);

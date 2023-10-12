@@ -21,28 +21,20 @@ class GeneralTermRepository extends ServiceEntityRepository
         parent::__construct($registry, GeneralTerm::class);
     }
 
-//    /**
-//     * @return GeneralTerm[] Returns an array of GeneralTerm objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('g.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?GeneralTerm
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function getContent(): string
+    {
+        $data = $this->createQueryBuilder('gt')
+                     ->addSelect('gt.content')
+                     ->orderBy('gt.id', 'desc') 
+                     ->getQuery()
+                     ->getOneOrNullResult();
+ 
+         $content = "";            
+ 
+         if (count($data)) {
+             $content = $data[0]->getContent();            
+         }            
+ 
+        return $content;
+    }
 }
