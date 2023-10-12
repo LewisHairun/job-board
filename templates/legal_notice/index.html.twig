@@ -3,5 +3,7 @@
 {% block title %}Mention legale{% endblock %}
 
 {% block body %}
-    {{ legalNotice() | raw }}
+    <div class="mt-3">
+        {{ legalNotice() | raw }}
+    </div>
 {% endblock %}
