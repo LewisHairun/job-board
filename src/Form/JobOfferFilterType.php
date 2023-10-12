@@ -23,7 +23,8 @@ class JobOfferFilterType extends AbstractType
                 "label" => false,
                 "required" => false,
                 "attr" => [
-                    "class" => "select-two-branch",
+                    "class" => "select-two",
+                    "data-placeholder" => "Selectionner un branche"
                 ]
             ])
             ->add('minSalary', TextType::class, [
@@ -43,23 +44,19 @@ class JobOfferFilterType extends AbstractType
             ->add('orderingCity', ChoiceType::class, [
                 "required" => false,
                 "label" => false,
-                "choices" => ["desc" => "desc", "asc" => "asc"],
+                "choices" => ["décroissant" => "desc", "croissant" => "asc"],
                 "attr" => [
-                    "class" => "select-two-ordering-city", 
+                    "class" => "select-two", 
+                    "data-placeholder" => "--Trier la ville par ordre --"
                 ]
             ])
             ->add('orderingJobOffer', ChoiceType::class, [
                 "required" => false,
                 "label" => false,
-                "choices" => ["desc" => "desc", "asc" => "asc"],
+                "choices" => ["décroissant" => "desc", "croissant" => "asc"],
                 "attr" => [
-                    "class" => "select-two-ordering-job-offer",
-                ]
-            ])
-            ->add('filter', SubmitType::class, [
-                'label' => "Filtrer",
-                'attr' => [
-                    'class' => "btn btn-md btn-secondary"
+                    "class" => "select-two",
+                    "data-placeholder" => "--Trier l'offre par ordre --"
                 ]
             ])
         ;
