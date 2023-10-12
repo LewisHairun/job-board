@@ -1,4 +1,24 @@
 {{ form_start(formJobOfferFilter) }}
-    {{ form_widget(formJobOfferFilter) }}
+    <div class="row d-flex align-items-center">
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            {{ form_row(formJobOfferFilter.jobBranch) }}
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            {{ form_row(formJobOfferFilter.minSalary) }}
+        </div>
+         <div class="col-lg-3 col-md-4 col-sm-6">
+            {{ form_row(formJobOfferFilter.maxSalary) }}
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            {{ form_row(formJobOfferFilter.orderingCity) }}
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            {{ form_row(formJobOfferFilter.orderingJobOffer) }}
+        </div>  
+        <div class="col-lg-3 col-md-4 col-sm-6">
+            <button type="submit" class="btn btn-sm btn-secondary">Filtrer</button>
+            <a href="{{ path('app_home') }}" class="btn btn-sm btn-primary ml-2">Réinitialiser</a>
+        </div>  
+    </div>
 {{ form_end(formJobOfferFilter) }}
 

@@ -274,7 +274,7 @@ class AppFixtures extends Fixture
     {
         $legalNotice = new LegalNotice;
         $content = <<<EOD
-            <div>
+            <div class="container">
                 <h2 style="text-align:center;"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Mention legale</strong></h2>
                 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                 <strong>Date d'effet</strong> : 05/10/23<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>
@@ -299,7 +299,7 @@ class AppFixtures extends Fixture
     {
         $generalTerm = new GeneralTerm;
         $content = <<<EOD
-            <div>
+            <div class="container">
                 <h2 style="text-align:center;"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<strong>Conditions Générales de Vente de Job Board</strong></h2>
                 <p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                     <strong>1. Identité de l'éditeur</strong>
