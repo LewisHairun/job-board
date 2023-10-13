@@ -47,4 +47,12 @@ class HomeController extends AbstractController
             'formJobOfferFilter' => $formJobOfferFilter
         ]);
     }
+
+    #[Route('/job-offers-locations', name: 'job_offers_locations', methods: 'GET')]
+    public function findAllJobOffersLocations(): Response
+    {
+        $locations = $this->jobOfferRepository->findAllJobOffersLocations();
+
+        return $this->json($locations, Response::HTTP_OK, [], ["groups" => "location:job:offer"]);
+    }
 }

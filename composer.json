@@ -78,6 +78,14 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "load-fixture": [
+            "php bin/console doctrine:fixture:load -n"
+        ],
+        "prepare-database": [
+            "php bin/console doctrine:database:drop --force",
+            "php bin/console doctrine:database:create",
+            "php bin/console doctrine:migrations:migrate"
         ]
     },
     "conflict": {

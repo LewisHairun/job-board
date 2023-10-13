@@ -6,6 +6,7 @@ use App\Repository\PositionTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PositionTypeRepository::class)]
 class PositionType
@@ -16,6 +17,7 @@ class PositionType
     private ?int $id = null;
 
     #[ORM\Column(length: 120)]
+    #[Groups("location:job:offer")]
     private ?string $type = null;
 
     #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: Candidate::class)]
