@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CandidateRepository::class)]
 class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
@@ -18,12 +19,19 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire")]
+    #[Assert\Length(max: 255, maxMessage: "Le prénom ne doit pas dépasser les {{ limit }} caractères")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 120)]
+    #[Assert\NotBlank(message: "Le nom de famille est obligatoire")]
+    #[Assert\Length(max: 120, maxMessage: "Le nom de famille ne doit pas dépasser les {{ limit }} caractères")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: "L'email est obligatoire")]
+    #[Assert\Email(message: "Veuillez fournir une adresse email valide")]
+    #[Assert\Length(max: 180, maxMessage: "L'adresse email ne doit pas dépasser les {{ limit }} caractères")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
