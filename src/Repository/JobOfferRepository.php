@@ -86,4 +86,14 @@ class JobOfferRepository extends ServiceEntityRepository
                 ->getQuery()
                 ->getResult();
    }
+
+   public function findAllJobOffersLocations(): array
+   {
+        $query = $this->createQueryBuilder('jo')
+                    ->addSelect('jo.latitude', 'jo.longitude', 'c.name AS cityName', 'pt.type')
+                    ->leftJoin('jo.city', 'c')
+                    ->leftJoin('jo.positionType', 'pt');
+
+        return $query->getQuery()->getResult();
+   }
 }

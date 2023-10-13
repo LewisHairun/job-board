@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: JobOfferRepository::class)]
 class JobOffer
@@ -35,9 +36,11 @@ class JobOffer
     private ?float $maxSalary = null;
 
     #[ORM\Column]
+    #[Groups("location:job:offer")]
     private ?float $longitude = null;
 
     #[ORM\Column]
+    #[Groups("location:job:offer")]
     private ?float $latitude = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -48,6 +51,7 @@ class JobOffer
 
     #[ORM\ManyToOne(inversedBy: 'jobOffers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("location:job:offer")]
     private ?City $city = null;
 
     #[ORM\ManyToOne(inversedBy: 'jobOffers')]
@@ -63,6 +67,7 @@ class JobOffer
 
     #[ORM\ManyToOne(inversedBy: 'jobOffers')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups("location:job:offer")]
     private ?PositionType $positionType = null;
 
     public function __construct()

@@ -82,9 +82,7 @@ class AppFixtures extends Fixture
 
     public function loadJobBranchesData(ObjectManager $manager): void
     {
-        $jobBranches = ["Développement web", "Développement mobile", "Assurance et qualité de logiciel", 
-                        "Comptabilité", "Ressources humaines", "Commerciale", "Formation français"
-                    ];
+        $jobBranches = ["Développement web", "Développement mobile"];
 
         foreach ($jobBranches as $jobBranch) {
             $entity = new JobBranch;
@@ -124,7 +122,7 @@ class AppFixtures extends Fixture
 
     public function loadPositionTypesData(ObjectManager $manager): void 
     {
-        $positionTypes = ["Développeur Php", "Développeur Js", "Ingénieur assurance et qualité", "Commerciale", "Recruteur"];
+        $positionTypes = ["Développeur Php", "Développeur Js", "Développeur React Native", "Développeur Flutter", "Développeur Java"];
 
         foreach ($positionTypes as $positionType) {
             $entity = new PositionType;
@@ -168,23 +166,54 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
+    public function loadPost(string $position): string
+    {
+       $post = "";
+
+       $post = match ($position) {
+        'Développeur Php' => "Php",
+        'Développeur Js' => "Js",
+        'Développeur React Native' => "React Native",
+        'Développeur Flutter' => "Flutter",
+        'Développeur Java' => "Java",
+       };
+
+       return $post;
+    }
+
+    public function loadCoordinate(string $cityName): array
+    {
+        $coordinate = [];
+
+        $coordinate = match($cityName) {
+            "Tananarive" => [-18.91368, 47.53613],
+            "Fianarantsoa" => [-21.45267, 47.08569],
+            "Antsirabe" => [-19.86586, 47.03333],
+            "Majunga" => [-15.71667, 46.31667],
+            "Tamatave" => [-18.1492, 49.40234],
+            "Tuléar" => [-23.35, 43.66667],
+            "Diégo-Suarez" => [-12.2787, 49.29171]
+        };
+
+        return $coordinate;
+    }
+
     public function loadJobOffersData(ObjectManager $manager): void
     {
         for ($i=0; $i < 10; $i++) { 
             $faker = Factory::create('fr_FR');
 
             $jobOffer = new JobOffer;
+            $jobBranch = $this->jobBranchRepository->findOneBy(["name" => $this->jobBranchesData[array_rand($this->jobBranchesData)]->getName()]);
             $positionType = $this->positionTypeRepository->findOneBy(["type" => $this->positionTypesData[array_rand($this->positionTypesData)]->getType()]);
-            $title = "Poste de " . $positionType->getType();
+            $title = "Poste de " . $this->loadPost($positionType->getType());
             $slug = strtolower($this->slugger->slug($title));
-            $longitude = $faker->longitude(-180, 180);
-            $latitude = $faker->latitude(-90, 90);
+            $city = $this->cityRepository->findOneBy(["name" => $this->citiesData[array_rand($this->citiesData)]->getName()]);
+            $latitude = $this->loadCoordinate($city->getName())[0];;
+            $longitude = $this->loadCoordinate($city->getName())[1];
             $expiringDate = (new \DateTime())->modify("+ 30 days");
             $publicationDate = new \DateTimeImmutable();
-            $city = $this->cityRepository->findOneBy(["name" => $this->citiesData[array_rand($this->citiesData)]->getName()]);
-            $jobBranch = $this->jobBranchRepository->findOneBy(["name" => $this->jobBranchesData[array_rand($this->jobBranchesData)]->getName()]);
             $recruiter = $this->recruiterRepository->findOneBy(["email" => $this->recruitersData[array_rand($this->recruitersData)]->getEmail()]);
-            $positionType = $this->positionTypeRepository->findOneBy(["type" => $this->positionTypesData[array_rand($this->positionTypesData)]->getType()]);
 
             $jobOffer->setTitle($title);
             $jobOffer->setSlug($slug);
@@ -192,8 +221,8 @@ class AppFixtures extends Fixture
             $jobOffer->setIsActivated(rand(0, 1));
             $jobOffer->setMinSalary($faker->numberBetween(50000, 70000) / 100);
             $jobOffer->setMaxSalary($faker->numberBetween(70000, 90000) / 100);
-            $jobOffer->setLongitude($longitude);
             $jobOffer->setLatitude($latitude);
+            $jobOffer->setLongitude($longitude);
             $jobOffer->setExpiringDate($expiringDate);
             $jobOffer->setPublicationDate($publicationDate);
             $jobOffer->setCity($city);
@@ -229,7 +258,7 @@ class AppFixtures extends Fixture
 
     public function loadSkillsData(ObjectManager $manager): void
     {
-        $skills = ["Communication", "Capacité d'apprentissage et d'adaptation", "Techno web"];
+        $skills = ["Communication", "Capacité d'apprentissage et d'adaptation", "Techno web", "Techno mobile"];
 
         foreach ($skills as $skill) {
             $entity = new Skill;
