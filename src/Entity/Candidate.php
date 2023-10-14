@@ -47,7 +47,7 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column(nullable: true)]
-    private ?bool $isActivated = null;
+    private ?bool $isActivated = false;
 
     #[ORM\ManyToOne(inversedBy: 'candidates')]
     #[ORM\JoinColumn(nullable: false)]
@@ -59,10 +59,17 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: CandidateJobOffer::class)]
     private Collection $candidateJobOffers;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $registeredDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cvAttachment = null;
+
     public function __construct()
     {
         $this->skill = new ArrayCollection();
         $this->candidateJobOffers = new ArrayCollection();
+        $this->registeredDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -259,5 +266,29 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    public function getRegisteredDate(): ?\DateTimeImmutable
+    {
+        return $this->registeredDate;
+    }
+
+    public function setRegisteredDate(\DateTimeImmutable $registeredDate): static
+    {
+        $this->registeredDate = $registeredDate;
+
+        return $this;
+    }
+
+    public function getCvAttachment(): ?string
+    {
+        return $this->cvAttachment;
+    }
+
+    public function setCvAttachment(?string $cvAttachment): static
+    {
+        $this->cvAttachment = $cvAttachment;
+
+        return $this;
     }
 }

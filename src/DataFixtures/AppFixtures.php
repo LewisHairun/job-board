@@ -148,7 +148,8 @@ class AppFixtures extends Fixture
             $email = strtolower($firstname) . "." . strtolower($lastname) . "@gmail.com";
             $password = $this->passwordHasher->hashPassword($candidate, "password");
             $positionType = $this->positionTypeRepository->findOneBy(["type" => $this->positionTypesData[array_rand($this->positionTypesData)]->getType()]);
-
+            $registeredDate = (new \DateTimeImmutable())->modify("- " . rand(1, 30) . "days"); 
+            
             $candidate->setFirstname($firstname);
             $candidate->setLastname($lastname);
             $candidate->setEmail($email);
@@ -157,6 +158,7 @@ class AppFixtures extends Fixture
             $candidate->setDegree($degrees[array_rand($degrees)]);
             $candidate->setRoles(["ROLE_CANDIDATE"]);
             $candidate->setIsActivated(rand(0, 1));
+            $candidate->setRegisteredDate($registeredDate);
             $candidate->setPositionType($positionType);
             $manager->persist($candidate);
 

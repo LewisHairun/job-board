@@ -33,8 +33,9 @@ class CandidateRegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
+            $candidate->setRoles(["ROLE_CANDIDATE"]);
 
-            $this->entityManager->persist($$candidate);
+            $this->entityManager->persist($candidate);
             $this->entityManager->flush();
 
             return $this->redirectToRoute('app_home');
