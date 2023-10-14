@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container mb-5">
+        <div class="row my-5">
+            <div class="col-md-6 col-lg-3" style="background: #f2f2f2;">
+                {% include "candidate/_profile_menu.html.twig" %}
+            </div>
+            <div class="col-md-6 col-lg-9 p-5" style="background: #f5f5f5;">
+                {{ form_start(form, {"attr": {"novalidate": true}}) }}
+                    <div class="row">
+                        <div class="col-6">{{ form_row(form.lastname) }}</div>
+                        <div class="col-6">{{ form_row(form.firstname) }}</div>
+                    </div>
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-sm btn-success">Modifier le profile</button> 
+                    <a href="{{ path('candidate_profile') }}" class="btn btn-sm btn-warning">
+                        Retourner au profile
+                    </a>   
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
+    <script src="{{ asset("plugins/select2/js/select2.min.js") }}"></script>
+    <script src="{{ asset("js/select-two.js") }}"></script>
+{% endblock %}
+
