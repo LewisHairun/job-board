@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
 {% endblock %}
 
+{% form_theme form _self %}
+
 {% block body %}
     <div class="container mb-5">
         <div class="row my-5">
@@ -29,9 +31,44 @@
     </div>
 {% endblock %}
 
+{% block _update_profile_profExperiences_widget %}
+    <input type="hidden" id="widget-counter-prof-exp" value="0">
+    {{ form_widget(form) }}
+    <div class="form-group">
+        <button type="button" class="btn btn-sm btn-secondary btn-add-prof-experience">Ajouter une expérience</button>
+    </div>
+{% endblock %}
+
+{% block _update_profile_profExperiences_entry_row %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block _update_profile_profExperiences_entry_widget %}
+    <div id="block-{{ id }}">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">{{ form_row(form.title) }}</div>
+            <div class="col-md-6 col-lg-6">{{ form_row(form.description) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">{{ form_row(form.company) }}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-6">{{ form_row(form.startDate) }}</div>
+            <div class="col-md-6 col-lg-6">{{ form_row(form.endDate) }}</div>
+        </div>
+        <div>
+            <button type="button" class="btn btn-sm btn-danger btn-delete-prof-exp my-2" 
+                    data-target="#block-{{ id }}">
+                Supprimer
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
 {% block javascripts %}
     <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
     <script src="{{ asset("plugins/select2/js/select2.min.js") }}"></script>
     <script src="{{ asset("js/select-two.js") }}"></script>
+    <script src="{{ asset("js/profile-candidate.js") }}"></script>
 {% endblock %}
 

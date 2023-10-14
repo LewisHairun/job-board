@@ -2,7 +2,9 @@
 
 namespace App\Controller\Candidate;
 
+use App\Contract\FileUploaderInterface;
 use App\Entity\Candidate;
+use App\Entity\ProfExperience;
 use App\Form\Candidate\UpdateProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +14,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, 
+                                private FileUploaderInterface $fileUploader)
     {
     }
 
@@ -25,11 +28,23 @@ class ProfileController extends AbstractController
     #[Route('/candidat/parametrage', name: 'candidate_setting')]
     public function setting(Request $request): Response
     {
+        /** @var Candidate $candidate */
         $candidate = $this->getUser();
         $form = $this->createForm(UpdateProfileType::class, $candidate);
         $form->handleRequest($request);
-
+       
         if ($form->isSubmitted() && $form->isValid()) {
+            $cvAttachment = $form->get("cvAttachment")->getData(); 
+            if ($cvAttachment) {
+               $filename = $this->fileUploader->upload($cvAttachment);
+               $candidate->setCvAttachment($filename);
+            }
+
+            foreach ($candidate->getProfExperiences() as $profExp) {
+                $profExp->setCandidate($candidate);
+                $this->entityManager->persist($profExp);
+            }
+
             $this->entityManager->persist($candidate);
             $this->entityManager->flush();
 

@@ -65,11 +65,15 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $cvAttachment = null;
 
+    #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: ProfExperience::class)]
+    private Collection $profExperiences;
+
     public function __construct()
     {
         $this->skill = new ArrayCollection();
         $this->candidateJobOffers = new ArrayCollection();
         $this->registeredDate = new \DateTimeImmutable();
+        $this->profExperiences = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -288,6 +292,36 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCvAttachment(?string $cvAttachment): static
     {
         $this->cvAttachment = $cvAttachment;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProfExperience>
+     */
+    public function getProfExperiences(): Collection
+    {
+        return $this->profExperiences;
+    }
+
+    public function addProfExperience(ProfExperience $profExperience): static
+    {
+        if (!$this->profExperiences->contains($profExperience)) {
+            $this->profExperiences->add($profExperience);
+            $profExperience->setCandidate($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProfExperience(ProfExperience $profExperience): static
+    {
+        if ($this->profExperiences->removeElement($profExperience)) {
+            // set the owning side to null (unless already changed)
+            if ($profExperience->getCandidate() === $this) {
+                $profExperience->setCandidate(null);
+            }
+        }
 
         return $this;
     }

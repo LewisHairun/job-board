@@ -5,15 +5,18 @@ namespace App\Form\Candidate;
 use App\Entity\Candidate;
 use App\Entity\PositionType;
 use App\Entity\Skill;
+use App\Form\ProfExperienceType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UpdateProfileType extends AbstractType
@@ -78,7 +81,22 @@ class UpdateProfileType extends AbstractType
             ->add('cvAttachment', FileType::class, [
                 'required' => false,
                 'label' => 'Uploader un CV (pdf, jpeg)',
-                'mapped' => false
+                'mapped' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '5000k',
+                        'maxSizeMessage' => "La taille du fichier ne doit pas depasser les 5 mega",
+                        'mimeTypes' => ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf', 'application/x-pdf'],
+                        'mimeTypesMessage' => "Veuillez uploader un image jpeg, jpg, png ou un fichier pdf"
+                    ])
+                ]
+            ])
+            ->add('profExperiences', CollectionType::class, [
+                "label" => "Expérience professionnelle",
+                'entry_type' => ProfExperienceType::class,
+                "allow_add" => true,
+                "allow_delete" => true,
+                "by_reference" => false
             ])
         ;
     }
