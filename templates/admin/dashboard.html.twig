@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
+                {% include "admin/_menu_dashboard.html.twig" %}
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <form action="{{ path("admin_dashboard") }}" method="get">
+                    <div class="row my-1 d-flex align-items-center">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="start_date">Date de debut</label>
+                                <input type="date" name="start_date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="end_date">Date de fin</label>
+                                <input type="date" name="end_date" class="form-control">
+                            </div>
+                        </div>
+                        <div class="mt-1">
+                            <button type="submit" class="btn btn-sm btn-secondary">Filtrer</button>
+                            <a href="{{ path("admin_dashboard") }}" class="btn btn-sm btn-warning">Reinitialiser</a>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card text-white">
+                            <div class="card-head bg-primary p-1">
+                                <h6 class="card-title text-md">Offres postée(s)</h6>
+                            </div>
+                            <div class="card-body" style="background: #f2f2f2;">
+                                <p class="card-text text-secondary">{{ countJobOffer }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card text-white">
+                            <div class="card-head bg-success p-1">
+                                <h6 class="card-title">Candidature(s)</h6>
+                            </div>
+                            <div class="card-body" style="background: #f2f2f2;">
+                                <p class="card-text text-secondary">{{ countCandidacy }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

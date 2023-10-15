@@ -21,28 +21,32 @@ class CandidateRepository extends ServiceEntityRepository
         parent::__construct($registry, Candidate::class);
     }
 
-//    /**
-//     * @return Candidate[] Returns an array of Candidate objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function countCandidacy(?\DateTime $startDate = null, \DateTime $endDate = null) : int {
+        $count = 0;
+        $now = (new \DateTimeImmutable())->format("Y-m-d");
+        $query = $this->createQueryBuilder("c")
+                      ->addSelect("c.id");
 
-//    public function findOneBySomeField($value): ?Candidate
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        if (isset($startDate) && isset($endDate)) {
+            if ($startDate == $endDate) {
+                $query->andWhere("c.registeredDate LIKE :date")
+                      ->setParameter("date", '%' . $startDate->format("Y-m-d") . '%');
+            } else {
+                $query->andWhere("c.registeredDate BETWEEN :startDate AND :endDate")
+                      ->setParameter("startDate", $startDate)
+                      ->setParameter("endDate", $endDate);
+            }
+        } else {
+            $query->andWhere("c.registeredDate LIKE :now")
+                  ->setParameter("now", "%" . $now . "%");
+        }
+
+        $result = $query->getQuery()->getResult();
+
+        if (count($result)) {
+            $count = count($result);
+        }
+
+        return $count;
+    }
 }

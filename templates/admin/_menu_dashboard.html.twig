@@ -1,0 +1,26 @@
+<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+    <a class="nav-link {{ activeMenu("admin_dashboard") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_dashboard") }}" 
+        role="tab" 
+        aria-controls="v-pills-home" 
+        aria-selected="true">
+            Tableau de bord
+    </a>
+    <a class="nav-link {{ activeMenu("admin_offer") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_offer") }}" 
+        role="tab" 
+        aria-controls="v-pills-profile" 
+        aria-selected="false">
+        Offres
+    </a>
+    <a class="nav-link {{ activeMenu("admin_candidate") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_candidate") }}" 
+        role="tab" 
+        aria-controls="v-pills-profile" 
+        aria-selected="false">
+        Candidats
+    </a>
+</div>

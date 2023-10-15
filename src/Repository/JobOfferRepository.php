@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\JobOffer;
+use DateTime;
+use DateTimeImmutable;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -96,4 +98,33 @@ class JobOfferRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
    }
+
+    public function countOfferPublished(?\DateTime $startDate = null, \DateTime $endDate = null) : int {
+        $count = 0;
+        $now = (new \DateTimeImmutable())->format("Y-m-d");
+        $query = $this->createQueryBuilder("jo")
+                      ->addSelect("jo.id");
+
+        if (isset($startDate) && isset($endDate)) {
+            if ($startDate == $endDate) {
+                $query->andWhere("jo.publicationDate LIKE :date")
+                      ->setParameter("date", '%' . $startDate->format("Y-m-d") . '%');
+            } else {
+                $query->andWhere("jo.publicationDate BETWEEN :startDate AND :endDate")
+                      ->setParameter("startDate", $startDate)
+                      ->setParameter("endDate", $endDate);
+            }
+        } else {
+            $query->andWhere("jo.publicationDate LIKE :now")
+                  ->setParameter("now", "%" . $now . "%");
+        }
+
+        $result = $query->getQuery()->getResult();
+
+        if (count($result)) {
+            $count = count($result);
+        }
+
+        return $count;
+    }
 }
