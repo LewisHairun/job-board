@@ -2,11 +2,6 @@
 
 {% block title %}Inscription{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('css/candidate.css') }}">
-    <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
-{% endblock %}
-
 {% block body %}
     <div class="container-fluid mt-5">
         <div class="d-flex justify-content-center">
@@ -48,7 +43,5 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
-    <script src="{{ asset("plugins/select2/js/select2.min.js") }}"></script>
     <script src="{{ asset("js/select-two.js") }}"></script>
 {% endblock %}
