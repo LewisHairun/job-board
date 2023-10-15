@@ -8,7 +8,43 @@
             <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
                 {% include "admin/_menu_dashboard.html.twig" %}
             </div>
-            <div class="col-lg-8 col-md-6">Ca</div>
+             <div class="col-lg-8 col-md-6">
+                <div class="mt-3">
+                    {% include "partials/_flash_message.html.twig" %}
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for candidate in candidates %}
+                        <tr>
+                            <td>
+                                {{ candidate.lastname is defined ? candidate.lastname : "" }}
+                            </td>
+                            <td>
+                                {{ candidate.firstname is defined ? candidate.firstname : "" }}
+                            </td>
+                            <td>
+                                <a href="{{ path('admin_moderation_candidate', {"id": candidate.id}) }}" 
+                                    class="btn btn-sm btn-{{ candidate.isActivated ? "danger" : "success" }}">
+                                    {{ candidate.isActivated ? "Désapprouver" : "Approuver" }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun offre</td>
+                        </tr>    
+                    {% endfor %}
+                    {% if candidates | length > 0 %}
+                        <div class="pagination d-flex justify-content-center">
+                            {{ knp_pagination_render(candidates) }}
+                        </div>
+                    {% endif %}
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
