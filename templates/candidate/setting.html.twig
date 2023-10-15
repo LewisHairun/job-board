@@ -2,10 +2,6 @@
 
 {% block title %}Profile{% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset("plugins/select2/css/select2.min.css") }}">
-{% endblock %}
-
 {% form_theme form _self %}
 
 {% block body %}
@@ -66,8 +62,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
-    <script src="{{ asset("plugins/select2/js/select2.min.js") }}"></script>
     <script src="{{ asset("js/select-two.js") }}"></script>
     <script src="{{ asset("js/profile-candidate.js") }}"></script>
 {% endblock %}
