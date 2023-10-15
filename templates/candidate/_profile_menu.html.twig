@@ -1,5 +1,5 @@
 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-    <a class="nav-link active" 
+    <a class="nav-link {{ activeMenu("candidate_profile") ? 'active' : '' }}" 
         data-toggle="pill" 
         href="{{ path('candidate_profile') }}" 
         role="tab" 
@@ -7,7 +7,7 @@
         aria-selected="true">
             Profile
     </a>
-    <a class="nav-link" 
+    <a class="nav-link {{ activeMenu("candidate_setting") ? 'active' : '' }}" 
         data-toggle="pill" 
         href="{{ path('candidate_setting') }}" 
         role="tab" 
