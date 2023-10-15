@@ -20,7 +20,7 @@ security:
             security: false
         candidate:
             lazy: true
-            pattern: ^/candidat
+            pattern: ^/
             provider: app_candidate_provider
             custom_authenticator: App\Security\Candidate\SecurityAuthenticator
             logout:

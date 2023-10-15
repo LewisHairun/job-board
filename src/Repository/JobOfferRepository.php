@@ -27,7 +27,7 @@ class JobOfferRepository extends ServiceEntityRepository
    public function findLatestJobOffers(string $keyword = null): array
    {
         $query = $this->createQueryBuilder('jo')
-                        ->addSelect('jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
+                        ->addSelect('jo.id', 'jo.slug', 'jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
                         ->leftJoin('jo.city', 'c')
                         ->leftJoin('jo.positionType', 'pt')
                         ->leftJoin('jo.jobBranch', 'jb'); 
@@ -49,7 +49,7 @@ class JobOfferRepository extends ServiceEntityRepository
    public function filterJobOffer($jobOfferFilter, string $orderingCity = "desc", string $orderingJobOffer = "desc"): array
    {
         $query = $this->createQueryBuilder('jo')
-                        ->addSelect('jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
+                        ->addSelect('jo.id', 'jo.slug', 'jo.title', 'jo.description', 'pt.type', 'c.name AS cityName', 'jb.name AS jobBranchName', 'jo.minSalary', 'jo.maxSalary') 
                         ->leftJoin('jo.city', 'c')
                         ->leftJoin('jo.positionType', 'pt')
                         ->leftJoin("jo.jobBranch", "jb"); 
@@ -90,7 +90,7 @@ class JobOfferRepository extends ServiceEntityRepository
    public function findAllJobOffersLocations(): array
    {
         $query = $this->createQueryBuilder('jo')
-                    ->addSelect('jo.latitude', 'jo.longitude', 'c.name AS cityName', 'pt.type')
+                    ->addSelect('jo.id', 'jo.slug', 'jo.latitude', 'jo.longitude', 'c.name AS cityName', 'pt.type')
                     ->leftJoin('jo.city', 'c')
                     ->leftJoin('jo.positionType', 'pt');
 
