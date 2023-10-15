@@ -16,12 +16,6 @@ class CandidateController extends AbstractController
     {
     }
 
-    #[Route('/candidat', name: 'candidate_index')]
-    public function index(): Response
-    {
-        return $this->render('candidate/index.html.twig', []);
-    }
-
     #[Route('/postuler/{id}/{slug}', name: 'apply_job_offer')]
     public function applyJobOffer(JobOffer $jobOffer): Response
     {
