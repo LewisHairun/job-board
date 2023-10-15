@@ -8,7 +8,51 @@
             <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
                 {% include "admin/_menu_dashboard.html.twig" %}
             </div>
-            <div class="col-lg-8 col-md-6">Of</div>
+            <div class="col-lg-8 col-md-6">
+                <div class="mt-3">
+                    {% include "partials/_flash_message.html.twig" %}
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Titre de metier</th>
+                        <th>Poste</th>
+                        <th>Branche de metier</th>
+                        <th>Ville</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for offer in offers %}
+                        <tr>
+                            <td>
+                                {{ offer.title is defined ? offer.title : "" }}
+                            </td>
+                            <td>
+                                {{ offer.positionType is defined ? offer.positionType.type : "" }}
+                            </td>
+                            <td>
+                                {{ offer.jobBranch is defined ? offer.jobBranch.name : "" }}
+                            </td>
+                            <td>
+                                {{ offer.city is defined ? offer.city.name : "" }}
+                            </td>
+                            <td>
+                                <a href="{{ path('admin_moderation_offer', {"id": offer.id}) }}" 
+                                    class="btn btn-sm btn-{{ offer.isActivated ? "danger" : "success" }}">
+                                    {{ offer.isActivated ? "Désapprouver" : "Approuver" }}
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun offre</td>
+                        </tr>    
+                    {% endfor %}
+                    {% if offers | length > 0 %}
+                        <div class="pagination d-flex justify-content-center">
+                            {{ knp_pagination_render(offers) }}
+                        </div>
+                    {% endif %}
+                </table>
+            </div>
         </div>
     </div>
 {% endblock %}
