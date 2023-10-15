@@ -19,6 +19,9 @@
         <div class="mt-3">
             {% include "home/_job_offer_filter.html.twig" %}
         </div>
+        <div class="mt-3">
+            {% include "partials/_flash_message.html.twig" %}
+        </div>
         {% for lastestJobOffer in lastestJobOffers %}
             <div class="mb-2 p-3 w-75 shadow">
                 <h5 class="text-primary">{{ lastestJobOffer.title is defined ? lastestJobOffer.title : "" }} | <span class="text-secondary h6">{{ lastestJobOffer.cityName is defined ? lastestJobOffer.cityName : "" }}</span></h5> 

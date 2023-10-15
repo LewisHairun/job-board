@@ -325,4 +325,9 @@ class Candidate implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function fullname(): string  
+    {
+        return "{$this->lastname} {$this->firstname}";
+    }
 }

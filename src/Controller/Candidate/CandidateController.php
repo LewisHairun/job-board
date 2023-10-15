@@ -36,6 +36,8 @@ class CandidateController extends AbstractController
         $this->entityManager->persist($candidateJobOffer);
         $this->entityManager->flush();
 
+        $this->addFlash("success", "Votre candidature a été envoyé avec succès");
+
         return $this->redirectToRoute("app_home");
     }
 }

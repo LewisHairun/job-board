@@ -1,0 +1,18 @@
+{% for label, messages in app.flashes %}
+    <div class="alert alert-{{ label }} alert-flash-message">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endfor %}
+
+{% block javascripts %}
+    <script src="{{ asset("plugins/jquery/jquery-3.7.1.min.js") }}"></script>
+    <script>
+        $(document).ready(function () { 
+            setTimeout(() => {
+                $(".alert-flash-message").fadeOut();
+            }, 3000);
+        });
+    </script>
+{% endblock %}

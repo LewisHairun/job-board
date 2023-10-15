@@ -4,7 +4,6 @@ namespace App\Controller\Candidate;
 
 use App\Contract\FileUploaderInterface;
 use App\Entity\Candidate;
-use App\Entity\ProfExperience;
 use App\Form\Candidate\UpdateProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +21,12 @@ class ProfileController extends AbstractController
     #[Route('/candidat/profile', name: 'candidate_profile')]
     public function index(): Response
     {
-        return $this->render('candidate/profile.html.twig', []);
+        /** @var Candidate $candidate */
+        $candidate = $this->getUser();
+
+        return $this->render('candidate/profile.html.twig', [
+            'candidate' => $candidate
+        ]);
     }
 
     #[Route('/candidat/parametrage', name: 'candidate_setting')]
@@ -47,6 +51,8 @@ class ProfileController extends AbstractController
 
             $this->entityManager->persist($candidate);
             $this->entityManager->flush();
+
+            $this->addFlash("success", "Votre profile a été mis à jour avec succès");
 
             return $this->redirectToRoute("candidate_profile");
         }
