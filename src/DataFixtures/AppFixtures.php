@@ -2,29 +2,28 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Candidate;
-use App\Entity\CandidateJobOffer;
 use Faker\Factory;
 use App\Entity\City;
-use App\Entity\GeneralTerm;
-use App\Entity\JobBranch;
+use App\Entity\User;
+use App\Entity\Skill;
 use App\Entity\JobOffer;
+use App\Entity\JobBranch;
+use App\Entity\Recruiter;
+use App\Entity\GeneralTerm;
 use App\Entity\LegalNotice;
 use App\Entity\PositionType;
-use App\Entity\Recruiter;
-use App\Entity\Skill;
-use App\Entity\User;
-use App\Repository\CandidateRepository;
+use App\Entity\CandidateJobOffer;
 use App\Repository\CityRepository;
-use App\Repository\JobBranchRepository;
-use App\Repository\JobOfferRepository;
-use App\Repository\PositionTypeRepository;
-use App\Repository\RecruiterRepository;
+use App\Repository\UserRepository;
 use App\Repository\SkillRepository;
+use App\Repository\JobOfferRepository;
+use App\Repository\JobBranchRepository;
+use App\Repository\RecruiterRepository;
 use Doctrine\Persistence\ObjectManager;
+use App\Repository\PositionTypeRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -42,7 +41,7 @@ class AppFixtures extends Fixture
                                 private SluggerInterface $slugger,
                                 private JobBranchRepository $jobBranchRepository,
                                 private RecruiterRepository $recruiterRepository,
-                                private CandidateRepository $candidateRepository,
+                                private UserRepository $userRepository,
                                 private JobOfferRepository $jobOfferRepository,
                                 private SkillRepository $skillRepository
                             )
@@ -142,7 +141,7 @@ class AppFixtures extends Fixture
         for ($i=0; $i < 20; $i++) { 
             $faker = Factory::create('fr_FR');
 
-            $candidate = new Candidate;
+            $candidate = new User;
             $firstname = $faker->firstName();
             $lastname = $faker->lastName();
             $email = strtolower($firstname) . "." . strtolower($lastname) . "@gmail.com";
@@ -244,7 +243,7 @@ class AppFixtures extends Fixture
     {
         for ($i=0; $i < 10; $i++) { 
             $candidateJobOffer = new CandidateJobOffer;
-            $candidate = $this->candidateRepository->findOneBy(["email" => $this->candidatesData[array_rand($this->candidatesData)]->getEmail()]);
+            $candidate = $this->userRepository->findOneBy(["email" => $this->candidatesData[array_rand($this->candidatesData)]->getEmail()]);
             $jobOffer = $this->jobOfferRepository->findOneBy(["title" => $this->jobOffersData[array_rand($this->jobOffersData)]->getTitle()]);
             $candidacyDate = new \DateTimeImmutable();
 
@@ -276,7 +275,7 @@ class AppFixtures extends Fixture
     public function loadCandidateSkillsData(ObjectManager $manager): void 
     {
         for ($i=0; $i < 10; $i++) { 
-            $candidate = $this->candidateRepository->findOneBy(["email" => $this->candidatesData[array_rand($this->candidatesData)]->getEmail()]);
+            $candidate = $this->userRepository->findOneBy(["email" => $this->candidatesData[array_rand($this->candidatesData)]->getEmail()]);
             $skill = $this->skillRepository->findOneBy(["name" => $this->skillsData[array_rand($this->skillsData)]->getName()]);
 
             $candidate->addSkill($skill);

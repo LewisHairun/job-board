@@ -2,9 +2,9 @@
 
 namespace App\Form\Candidate;
 
-use App\Entity\Candidate;
 use App\Entity\PositionType;
 use App\Entity\Skill;
+use App\Entity\User;
 use App\Form\ProfExperienceType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -104,7 +104,7 @@ class UpdateProfileType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Candidate::class,
+            'data_class' => User::class,
         ]);
     }
 }

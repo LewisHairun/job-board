@@ -2,7 +2,7 @@
 
 namespace App\Form\Candidate;
 
-use App\Entity\Candidate;
+use App\Entity\User;
 use App\Entity\PositionType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -70,7 +70,7 @@ class RegistrationFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Candidate::class,
+            'data_class' => User::class,
         ]);
     }
 }

@@ -20,7 +20,7 @@ class PositionType
     #[Groups("location:job:offer")]
     private ?string $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: Candidate::class)]
+    #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: User::class)]
     private Collection $candidates;
 
     #[ORM\OneToMany(mappedBy: 'positionType', targetEntity: JobOffer::class)]
@@ -57,7 +57,7 @@ class PositionType
         return $this->candidates;
     }
 
-    public function addCandidate(Candidate $candidate): static
+    public function addCandidate(User $candidate): static
     {
         if (!$this->candidates->contains($candidate)) {
             $this->candidates->add($candidate);
@@ -67,7 +67,7 @@ class PositionType
         return $this;
     }
 
-    public function removeCandidate(Candidate $candidate): static
+    public function removeCandidate(User $candidate): static
     {
         if ($this->candidates->removeElement($candidate)) {
             // set the owning side to null (unless already changed)

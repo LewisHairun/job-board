@@ -18,7 +18,7 @@ class Skill
     #[ORM\Column(length: 130)]
     private ?string $name = null;
 
-    #[ORM\ManyToMany(targetEntity: Candidate::class, mappedBy: 'skill')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'skill')]
     private Collection $candidates;
 
     public function __construct()
@@ -44,14 +44,14 @@ class Skill
     }
 
     /**
-     * @return Collection<int, Candidate>
+     * @return Collection<int, User>
      */
     public function getCandidates(): Collection
     {
         return $this->candidates;
     }
 
-    public function addCandidate(Candidate $candidate): static
+    public function addCandidate(User $candidate): static
     {
         if (!$this->candidates->contains($candidate)) {
             $this->candidates->add($candidate);
@@ -61,7 +61,7 @@ class Skill
         return $this;
     }
 
-    public function removeCandidate(Candidate $candidate): static
+    public function removeCandidate(User $candidate): static
     {
         if ($this->candidates->removeElement($candidate)) {
             $candidate->removeSkill($this);

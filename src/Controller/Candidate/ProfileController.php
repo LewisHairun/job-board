@@ -3,7 +3,7 @@
 namespace App\Controller\Candidate;
 
 use App\Contract\FileUploaderInterface;
-use App\Entity\Candidate;
+use App\Entity\User;
 use App\Form\Candidate\UpdateProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +21,7 @@ class ProfileController extends AbstractController
     #[Route('/candidat/profile', name: 'candidate_profile')]
     public function index(): Response
     {
-        /** @var Candidate $candidate */
+        /** @var User $candidate */
         $candidate = $this->getUser();
 
         return $this->render('candidate/profile.html.twig', [
@@ -32,7 +32,7 @@ class ProfileController extends AbstractController
     #[Route('/candidat/parametrage', name: 'candidate_setting')]
     public function setting(Request $request): Response
     {
-        /** @var Candidate $candidate */
+        /** @var User $candidate */
         $candidate = $this->getUser();
         $form = $this->createForm(UpdateProfileType::class, $candidate);
         $form->handleRequest($request);

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Candidate;
 
-use App\Entity\Candidate;
+use App\Entity\User;
 use App\Form\Candidate\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,7 +22,7 @@ class CandidateRegistrationController extends AbstractController
     #[Route('/candidat/inscription', name: 'candidate_registration')]
     public function register(Request $request): Response
     {
-        $candidate = new Candidate();
+        $candidate = new User();
         $form = $this->createForm(RegistrationFormType::class, $candidate);
         $form->handleRequest($request);
 

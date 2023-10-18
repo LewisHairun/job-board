@@ -2,7 +2,7 @@
 
 namespace App\Controller\Candidate;
 
-use App\Entity\Candidate;
+use App\Entity\User;
 use App\Entity\CandidateJobOffer;
 use App\Entity\JobOffer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +19,7 @@ class CandidateController extends AbstractController
     #[Route('/postuler/{id}/{slug}', name: 'apply_job_offer')]
     public function applyJobOffer(JobOffer $jobOffer): Response
     {
-        /** @var Candidate $candidate */
+        /** @var User $candidate */
         $candidate = $this->getUser();
         $registeredDate = new \DateTimeImmutable();
         $candidateJobOffer = new CandidateJobOffer;

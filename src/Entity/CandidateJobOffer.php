@@ -15,7 +15,7 @@ class CandidateJobOffer
 
     #[ORM\ManyToOne(inversedBy: 'candidateJobOffers')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Candidate $candidate = null;
+    private ?User $candidate = null;
 
     #[ORM\ManyToOne(inversedBy: 'candidateJobOffers')]
     #[ORM\JoinColumn(nullable: false)]
@@ -29,12 +29,12 @@ class CandidateJobOffer
         return $this->id;
     }
 
-    public function getCandidate(): ?Candidate
+    public function getCandidate(): ?User
     {
         return $this->candidate;
     }
 
-    public function setCandidate(?Candidate $candidate): static
+    public function setCandidate(?User $candidate): static
     {
         $this->candidate = $candidate;
 

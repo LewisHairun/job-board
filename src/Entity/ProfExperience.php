@@ -32,7 +32,7 @@ class ProfExperience
     private ?\DateTimeInterface $endDate = null;
 
     #[ORM\ManyToOne(inversedBy: 'profExperiences', cascade: ["persist"])]
-    private ?Candidate $candidate = null;
+    private ?User $candidate = null;
 
     public function getId(): ?int
     {
@@ -99,12 +99,12 @@ class ProfExperience
         return $this;
     }
 
-    public function getCandidate(): ?Candidate
+    public function getCandidate(): ?User
     {
         return $this->candidate;
     }
 
-    public function setCandidate(?Candidate $candidate): static
+    public function setCandidate(?User $candidate): static
     {
         $this->candidate = $candidate;
 

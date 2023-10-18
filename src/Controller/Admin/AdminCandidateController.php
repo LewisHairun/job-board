@@ -2,8 +2,8 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Candidate;
-use App\Repository\CandidateRepository;
+use App\Entity\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminCandidateController extends AbstractController
 {
-    public function __construct(private CandidateRepository $candidateRepository,
+    public function __construct(private UserRepository $userRepository,
                                 private PaginatorInterface $paginator,
                                 private EntityManagerInterface $entityManager)
     {
@@ -24,7 +24,7 @@ class AdminCandidateController extends AbstractController
     {
         $page = $request->query->get('page', 1);
         $limit = 10;
-        $candidates = $this->paginator->paginate($this->candidateRepository->findBy([], ["lastname" => "desc"]), $page, $limit); 
+        $candidates = $this->paginator->paginate($this->userRepository->findBy([], ["lastname" => "desc"]), $page, $limit); 
 
         return $this->render('admin/candidate/index.html.twig', [
             "candidates" => $candidates
@@ -32,7 +32,7 @@ class AdminCandidateController extends AbstractController
     }
 
     #[Route('/admin/moderation/candidat/{id}', name: 'admin_moderation_candidate')]
-    public function moderation(Candidate $candidate): Response
+    public function moderation(User $candidate): Response
     {
         $isActivated = $candidate->isIsActivated();
         $candidate->setIsActivated(!$isActivated); 
