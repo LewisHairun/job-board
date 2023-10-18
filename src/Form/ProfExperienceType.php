@@ -24,10 +24,12 @@ class ProfExperienceType extends AbstractType
                 "required" => false
             ])
             ->add('startDate', DateType::class, [
-                "label" => "Date de debut"
+                "label" => "Date de debut",
+                "widget" => "single_text"
             ])
             ->add('endDate', DateType::class, [
-                "label" => "Date de fin"
+                "label" => "Date de fin",
+                "widget" => "single_text"
             ])
         ;
     }

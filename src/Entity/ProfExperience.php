@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProfExperienceRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProfExperienceRepository::class)]
 class ProfExperience
@@ -18,6 +19,7 @@ class ProfExperience
     private ?string $title = null;
 
     #[ORM\Column(length: 200)]
+    #[Assert\NotBlank(message: "La description est obligatoire")]
     private ?string $description = null;
 
     #[ORM\Column(length: 100, nullable: true)]
