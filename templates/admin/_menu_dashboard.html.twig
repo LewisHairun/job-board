@@ -31,4 +31,12 @@
         aria-selected="false">
         Roles
     </a>
+    <a class="nav-link {{ activeMenu("admin_user_role_index") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_user_role_index") }}" 
+        role="tab" 
+        aria-controls="v-pills-profile" 
+        aria-selected="false">
+        Role des utilisateurs
+    </a>
 </div>

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Administration des rôles{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
+            {% include "admin/_menu_dashboard.html.twig" %}
+        </div>
+        <div class="col-lg-8 col-md-6">
+            <div class="mt-3">
+                {% include "partials/_flash_message.html.twig" %}
+            </div>
+            <table class="table">
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Action</th>
+                </tr>
+                {% for user in users %}
+                        <tr>
+                            <td>
+                                {{ user.lastname is defined ? user.lastname : "" }}
+                            </td>
+                            <td>
+                                {{ user.firstname is defined ? user.firstname : "" }}
+                            </td>
+                            <td>
+                                <a href="{{ path('admin_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-success">
+                                    Modifier son rôle
+                                </a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucun offre</td>
+                        </tr>    
+                    {% endfor %}
+                {% if users | length > 0 %}
+                    <div class="pagination d-flex justify-content-center">
+                        {{ knp_pagination_render(users) }}
+                    </div>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

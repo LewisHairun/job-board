@@ -15,4 +15,14 @@
         aria-selected="false">
         Paramètrage
     </a>
+    {% if is_granted("ROLE_ADMIN") %}
+        <a class="nav-link {{ activeMenu("admin_dashboard") ? 'active' : '' }}" 
+            data-toggle="pill" 
+            href="{{ path("admin_dashboard") }}" 
+            role="tab" 
+            aria-controls="v-pills-home" 
+            aria-selected="true">
+            Backoffice
+        </a>
+    {% endif %}
 </div>
