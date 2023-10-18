@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Rôle{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
+                {% include "admin/_menu_dashboard.html.twig" %}
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <h4>Enregister un nouveau rôle</h4>
+                {{ include('admin/role/_form.html.twig') }}
+                <a href="{{ path('admin_role_index') }}" class="btn btn-sm btn-warning mt-1">Retourner à la liste</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

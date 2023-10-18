@@ -29,15 +29,15 @@ class EventLogSubscriber implements EventSubscriberInterface
                 $dataForm = (array) $dataForm;
                 $values = $dataForm["\x00*\x00parameters"][$key];
     
-                if (array_key_exists("_token", $values)) {
-                    unset($values["_token"]);
-                }
+                // if (array_key_exists("_token", $values)) {
+                //     unset($values["_token"]);
+                // }
     
-                if (array_key_exists("plainPassword", $values)) {
-                    unset($values["plainPassword"]);
-                }
+                // if (array_key_exists("plainPassword", $values)) {
+                //     unset($values["plainPassword"]);
+                // }
     
-                $data = array_merge($values);
+                // $data = array_merge($values);
             }
                 
             if ($fileForm && $fileForm->keys() && $fileForm->keys()[0]) {
@@ -45,9 +45,9 @@ class EventLogSubscriber implements EventSubscriberInterface
                 $fileForm = (array) $fileForm;
                 $values = $fileForm["\x00*\x00parameters"][$key];
                 
-                if (array_key_exists("_token", $values)) {
-                    unset($values["_token"]);
-                }
+                // if (array_key_exists("_token", $values)) {
+                //     unset($values["_token"]);
+                // }
     
                 if (isset($values) && isset($values[0]) && $values[0]->getClientOriginalName() && array_values($values)[0]->getMimetype()) {
                     $mimeType = $this->checkExtension(array_values($values)[0]->getMimetype());

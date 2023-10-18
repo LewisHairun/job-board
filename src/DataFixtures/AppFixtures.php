@@ -13,6 +13,7 @@ use App\Entity\GeneralTerm;
 use App\Entity\LegalNotice;
 use App\Entity\PositionType;
 use App\Entity\CandidateJobOffer;
+use App\Entity\Role;
 use App\Repository\CityRepository;
 use App\Repository\UserRepository;
 use App\Repository\SkillRepository;
@@ -62,6 +63,7 @@ class AppFixtures extends Fixture
         $this->loadUserAdmin($manager);
         $this->loadLegalNotice($manager);
         $this->loadGeneralTerm($manager);
+        $this->loadRole($manager);
     }
 
     public function loadCitiesData(ObjectManager $manager): void
@@ -110,7 +112,6 @@ class AppFixtures extends Fixture
             $recruiter->setEmail($email);
             $recruiter->setPicture(null);
             $recruiter->setPassword($password);
-            $recruiter->setRoles(["ROLE_RECRUITER"]);
             $manager->persist($recruiter);
 
             $this->recruitersData[] = $recruiter;
@@ -155,7 +156,6 @@ class AppFixtures extends Fixture
             $candidate->setPicture(null);
             $candidate->setPassword($password);
             $candidate->setDegree($degrees[array_rand($degrees)]);
-            $candidate->setRoles(["ROLE_CANDIDATE"]);
             $candidate->setIsActivated(rand(0, 1));
             $candidate->setRegisteredDate($registeredDate);
             $candidate->setPositionType($positionType);
@@ -294,7 +294,6 @@ class AppFixtures extends Fixture
         $admin->setLastname("Admin");
         $admin->setEmail("admin@gmail.com");
         $admin->setPassword($password);
-        $admin->setRoles(["ROLE_ADMIN"]);
 
         $manager->persist($admin);
         $manager->flush();
@@ -345,6 +344,19 @@ class AppFixtures extends Fixture
         $generalTerm->setContent($content);
 
         $manager->persist($generalTerm);
+        $manager->flush();
+    }
+
+    public function loadRole(ObjectManager $manager)
+    {
+        $roleNames = ["ROLE_ADMIN", "ROLE_CANDIDATE"];
+
+        foreach ($roleNames as $roleName) {
+            $role = new Role;
+            $role->setName($roleName);
+            $manager->persist($role);
+        }
+
         $manager->flush();
     }
 }

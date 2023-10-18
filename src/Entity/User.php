@@ -67,12 +67,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'candidate', targetEntity: ProfExperience::class)]
     private Collection $profExperiences;
 
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'roles_user')]
+    private Collection $role;
+
     public function __construct()
     {
         $this->skill = new ArrayCollection();
         $this->candidateJobOffers = new ArrayCollection();
         $this->registeredDate = new \DateTimeImmutable();
         $this->profExperiences = new ArrayCollection();
+        $this->role = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -160,9 +164,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_RECRUITER
-        $roles[] = 'ROLE_CANDIDATE';
+        $roles = $this->role->map(function($role) {
+            return $role->getName();
+        })->toArray();
+
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
@@ -328,5 +334,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function fullname(): string  
     {
         return "{$this->lastname} {$this->firstname}";
+    }
+
+    /**
+     * @return Collection<int, Role>
+     */
+    public function getRole(): Collection
+    {
+        return $this->role;
+    }
+
+    public function addRole(Role $role): static
+    {
+        if (!$this->role->contains($role)) {
+            $this->role->add($role);
+        }
+
+        return $this;
+    }
+
+    public function removeRole(Role $role): static
+    {
+        $this->role->removeElement($role);
+
+        return $this;
     }
 }

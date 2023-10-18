@@ -46,7 +46,21 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
             return new RedirectResponse($targetPath);
         }
 
-        // dd($token->getRoleNames()[0]);
+        /** @var User $user */
+        $user = $token->getUser();
+        $roles = $user->getRole()->toArray();
+
+        if (count($roles)) {
+            $roleName = $roles[0]->getName();
+            
+            if ($roleName == "ROLE_ADMIN") {
+                return new RedirectResponse($this->urlGenerator->generate('admin_dashboard'));
+            }
+
+            if ($roleName == "ROLE_CANDIDATE") {
+                return new RedirectResponse($this->urlGenerator->generate('candidate_profile'));
+            }
+        }
 
         return new RedirectResponse($this->urlGenerator->generate('app_home'));
     }
