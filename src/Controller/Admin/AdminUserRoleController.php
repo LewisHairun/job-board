@@ -20,7 +20,7 @@ class AdminUserRoleController extends AbstractController
     {
     }
     
-    #[Route('/admin/utilisateur', name: 'admin_user_role_index')]
+    #[Route('/admin/utilisateur/role', name: 'admin_user_role_index')]
     public function index(Request $request): Response
     {
         $page = $request->query->get('page', 1);
@@ -32,7 +32,7 @@ class AdminUserRoleController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/editer', name: 'admin_user_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/utilisateur/role/{id}/editer', name: 'admin_user_role_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserRoleType::class, $user);

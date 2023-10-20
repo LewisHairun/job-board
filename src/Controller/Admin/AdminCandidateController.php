@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class AdminCandidateController extends AbstractController
 {
@@ -32,6 +33,7 @@ class AdminCandidateController extends AbstractController
     }
 
     #[Route('/admin/moderation/candidat/{id}', name: 'admin_moderation_candidate')]
+    #[IsGranted("moderate_candidate", "candidate")]
     public function moderation(User $candidate): Response
     {
         $isActivated = $candidate->isIsActivated();

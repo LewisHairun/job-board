@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer Permission de Rôle{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-lg-4 col-md-6" style="background: #f2f2f2;">
+                {% include "admin/_menu_dashboard.html.twig" %}
+            </div>
+            <div class="col-lg-8 col-md-6">
+                <h4>Edition de permission de rôle</h4>
+                {{ form_start(form, {"attr": {"novalidate": true}}) }}
+                    {{ form_widget(form) }}
+                    <div class="d-flex gap-1">
+                        <button class="btn btn-sm btn-info">{{ button_label|default('Enregister') }}</button>
+                        <a href="{{ path('admin_role_permission_index') }}" class="btn btn-sm btn-warning mt-1">Retourner à la liste</a>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

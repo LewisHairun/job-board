@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Administration des rôles{% endblock %}
+{% block title %}Administration des permissions de rôle{% endblock %}
 
 {% block body %}
 <div class="container">
@@ -15,20 +15,16 @@
             <table class="table">
                 <tr>
                     <th>Nom</th>
-                    <th>Prénom</th>
                     <th>Action</th>
                 </tr>
-                {% for user in users %}
+                {% for role in roles %}
                         <tr>
                             <td>
-                                {{ user.lastname is defined ? user.lastname : "" }}
+                                {{ role.name is defined ? role.name : "" }}
                             </td>
                             <td>
-                                {{ user.firstname is defined ? user.firstname : "" }}
-                            </td>
-                            <td>
-                                <a href="{{ path('admin_user_role_edit', {'id': user.id}) }}" class="btn btn-sm btn-success">
-                                    Modifier son rôle
+                                <a href="{{ path('admin_role_permission_edit', {'id': role.id}) }}" class="btn btn-sm btn-success">
+                                    Modifier les permissions
                                 </a>
                             </td>
                         </tr>
@@ -37,9 +33,9 @@
                             <td colspan="5">Aucun offre</td>
                         </tr>    
                     {% endfor %}
-                {% if users | length > 0 %}
+                {% if roles | length > 0 %}
                     <div class="pagination d-flex justify-content-center">
-                        {{ knp_pagination_render(users) }}
+                        {{ knp_pagination_render(roles) }}
                     </div>
                 {% endif %}
             </table>
