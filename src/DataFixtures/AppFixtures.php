@@ -13,6 +13,7 @@ use App\Entity\GeneralTerm;
 use App\Entity\LegalNotice;
 use App\Entity\PositionType;
 use App\Entity\CandidateJobOffer;
+use App\Entity\Permission;
 use App\Entity\Role;
 use App\Repository\CityRepository;
 use App\Repository\UserRepository;
@@ -22,6 +23,7 @@ use App\Repository\JobBranchRepository;
 use App\Repository\RecruiterRepository;
 use Doctrine\Persistence\ObjectManager;
 use App\Repository\PositionTypeRepository;
+use App\Repository\RoleRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -44,7 +46,8 @@ class AppFixtures extends Fixture
                                 private RecruiterRepository $recruiterRepository,
                                 private UserRepository $userRepository,
                                 private JobOfferRepository $jobOfferRepository,
-                                private SkillRepository $skillRepository
+                                private SkillRepository $skillRepository,
+                                private RoleRepository $roleRepository
                             )
     {
     }
@@ -64,6 +67,10 @@ class AppFixtures extends Fixture
         $this->loadLegalNotice($manager);
         $this->loadGeneralTerm($manager);
         $this->loadRole($manager);
+        $this->loadPermission($manager);
+        $this->loadRoleUserAdmin($manager);
+        $this->loadUserCandidate($manager);
+        $this->loadRoleUserCandidate($manager);
     }
 
     public function loadCitiesData(ObjectManager $manager): void
@@ -347,7 +354,7 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
-    public function loadRole(ObjectManager $manager)
+    public function loadRole(ObjectManager $manager): void
     {
         $roleNames = ["ROLE_ADMIN", "ROLE_CANDIDATE"];
 
@@ -359,4 +366,55 @@ class AppFixtures extends Fixture
 
         $manager->flush();
     }
+
+    public function loadPermission(ObjectManager $manager): void
+    {
+        $permissions = ["apply_job_offer", "admin_dashboard"];
+
+        foreach ($permissions as $permissionName) {
+            $permission = new Permission;
+            $permission->setName($permissionName);
+            $manager->persist($permission);
+        }
+
+        $manager->flush();
+    }
+
+    public function loadRoleUserAdmin(ObjectManager $manager): void
+    {
+        /** @var User $admin */
+        $admin = $this->userRepository->findOneBy(["email" => "admin@gmail.com"]);
+        $role = $this->roleRepository->findOneBy(["name" => "ROLE_ADMIN"]);
+
+        $admin->addRole($role);
+        $manager->persist($admin);
+        $manager->flush();
+    }
+
+    public function loadUserCandidate(ObjectManager $manager): void
+    {
+        $candidate = new User;
+        $password = $this->passwordHasher->hashPassword($candidate, "password");
+
+        $candidate->setFirstname("Candidat");
+        $candidate->setLastname("Candidat");
+        $candidate->setEmail("candidate@gmail.com");
+        $candidate->setPassword($password);
+
+        $manager->persist($candidate);
+        $manager->flush();
+    }
+
+    public function loadRoleUserCandidate(ObjectManager $manager): void
+    {
+        /** @var User $candidate */
+        $candidate = $this->userRepository->findOneBy(["email" => "candidate@gmail.com"]);
+        $role = $this->roleRepository->findOneBy(["name" => "ROLE_CANDIDATE"]);
+
+        $candidate->addRole($role);
+        $manager->persist($candidate);
+        $manager->flush();
+    }
 }
+
+

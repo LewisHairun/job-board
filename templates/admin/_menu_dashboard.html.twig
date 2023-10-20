@@ -39,4 +39,12 @@
         aria-selected="false">
         Role des utilisateurs
     </a>
+    <a class="nav-link {{ activeMenu("admin_permission_index") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_permission_index") }}" 
+        role="tab" 
+        aria-controls="v-pills-profile" 
+        aria-selected="false">
+        Permissions
+    </a>
 </div>
