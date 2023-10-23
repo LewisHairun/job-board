@@ -21,28 +21,21 @@ class RoleRepository extends ServiceEntityRepository
         parent::__construct($registry, Role::class);
     }
 
-//    /**
-//     * @return Role[] Returns an array of Role objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function getRoleNames()
+    {
+        $result = $this->createQueryBuilder("r")
+                    ->addSelect("r.name")
+                    ->getQuery()
+                    ->getResult();
 
-//    public function findOneBySomeField($value): ?Role
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        $roleNames = [];            
+
+        if (count($result)) {
+            foreach ($result as $item) {
+                $roleNames[] = $item[0]->getName();
+            }    
+        }
+        
+        return $roleNames;
+    }
 }

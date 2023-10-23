@@ -55,4 +55,12 @@
         aria-selected="false">
         Permissions de rôle
     </a>
+    <a class="nav-link {{ activeMenu("admin_role_permission_list") ? 'active' : '' }}" 
+        data-toggle="pill" 
+        href="{{ path("admin_role_permission_list") }}" 
+        role="tab" 
+        aria-controls="v-pills-profile" 
+        aria-selected="false">
+        Admin Permissions
+    </a>
 </div>

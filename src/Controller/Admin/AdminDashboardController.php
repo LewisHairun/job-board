@@ -21,25 +21,6 @@ class AdminDashboardController extends AbstractController
     #[Route('/admin/tableau-de-bord', name: 'admin_dashboard')]
     public function dashboard(Request $request, RoleRepository $roleRepository): Response
     {
-        $roles = $this->getUser()->getRoles();
-        $roles = array_diff($roles, ["ROLE_USER"]);
-        $pageAuthorized = [];
-
-        if (count($roles)) {
-            $roleName = $roles[0];
-            $role = $roleRepository->findOneBy(["name" => $roleName]);
-            
-            if (count($role->getPermission())) {
-                $permissions = $role->getPermission()->toArray();
-                
-                foreach ($permissions as $permission) {
-                    $pageAuthorized[] = $permission->getName();
-                }
-            }
-        }
-        
-        dd($pageAuthorized);
-
         $startDate = $request->query->get("start_date") ? new \DateTime($request->query->get("start_date")) : null;
         $endDate = $request->query->get("end_date") ? new \DateTime($request->query->get("end_date")) : null;
 

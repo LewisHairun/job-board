@@ -50,4 +50,26 @@ class AdminRolePermissionController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/admin/role/permission', name: 'admin_role_permission_list', methods: ['GET', 'POST'])]
+    public function manage()
+    {
+        // dd((new ReflectionClass(AdminCandidateController::class))->getMethod("index")->getAttributes()[0]->getArguments()["name"]);
+        $entities = scandir(dirname(__DIR__, 2) . "/Entity");
+        $entities = array_diff($entities, [".", "..", ".gitignore"]);
+        $entityNames = [];
+
+        foreach ($entities as $entity) {
+            $entityNames[] = substr($entity, 0, strrpos($entity, "."));
+        }
+
+        $roles = $this->roleRepository->getRoleNames();
+
+        $data = [
+            "entityNames" => $entityNames,
+            "roles" => $roles
+        ];
+
+        return $this->render("admin/role_permission/list.html.twig", compact("data"));
+    }
 }
