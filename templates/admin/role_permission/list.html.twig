@@ -23,34 +23,70 @@
                     {% endfor %}
                 </tr>
 
+                <form action="{{ path("admin_role_permission_save") }}" method="POST">
                 {% for entityName in data["entityNames"] %}
-                    <tr>
-                        <td>{{ entityName }}</td>
-                        <td>add</td>
-                        <td>1<input type="checkbox" name="" id=""></td>
-                        <td>2<input type="checkbox" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>edit</td>
-                        <td><input type="checkbox" name="" id=""></td>
-                        <td><input type="checkbox" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>view</td>
-                        <td><input type="checkbox" name="" id=""></td>
-                        <td><input type="checkbox" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>delete</td>
-                        <td><input type="checkbox" name="" id=""></td>
-                        <td><input type="checkbox" name="" id=""></td>
-                    </tr>
+                        <tr>
+                            <td>{{ entityName }}</td>
+                            <td>add</td>
+                            {% for role in data["roles"] %}
+                                <td>
+                                    <input type="checkbox" 
+                                            name="permission[{{ entityName }}][{{ role }}][setCanAdd]" 
+                                            class="add-permission"
+                                            id="{{ "add-" ~ role ~ "-" ~ entityName }}"
+                                            {% if can(entityName, role) %}checked{% endif %}
+                                    > 
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>edit</td>
+                            {% for role in data["roles"] %}
+                                <td>
+                                    <input type="checkbox" 
+                                            name="permission[{{ entityName }}][{{ role }}][setCanEdit]" 
+                                            class="edit-permission"
+                                            id="{{ "edit-" ~ role ~ "-" ~ entityName }}"
+                                        {% if can(entityName, role) %}checked{% endif %}
+                                    >        
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>view</td>
+                            {% for role in data["roles"] %}
+                                <td>
+                                    <input type="checkbox" 
+                                            name="permission[{{ entityName }}][{{ role }}][setCanView]" 
+                                            class="view-permission"
+                                            id="{{ "view-" ~ role ~ "-" ~ entityName }}"
+                                        {% if can(entityName, role) %}checked{% endif %}
+                                    >
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>delete</td>
+                            {% for role in data["roles"] %}
+                                <td>
+                                    <input type="checkbox" 
+                                            name="permission[{{ entityName }}][{{ role }}][setCanDelete]" 
+                                            class="delete-permission"
+                                            id="{{ "delete-" ~ role ~ "-" ~ entityName }}"
+                                            {% if can(entityName, role) %}checked{% endif %}
+                                    >
+                                </td>
+                            {% endfor %}
+                        </tr>
                 {% endfor %}
             </table>
+            <button type="submit" class="btn btn-sm btn-success btn-save-permission my-3" name="btn-save-permission">Sauvegarder</button>  
+        </form> 
         </div>
     </div>
 </div>
 {% endblock %}
+

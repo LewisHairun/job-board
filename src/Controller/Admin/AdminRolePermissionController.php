@@ -2,8 +2,10 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\EntityRolePermission;
 use App\Entity\Role;
 use App\Form\RolePermissionType;
+use App\Repository\EntityRolePermissionRepository;
 use App\Repository\RoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -16,7 +18,8 @@ class AdminRolePermissionController extends AbstractController
 {
     public function __construct(private RoleRepository $roleRepository, 
                                 private PaginatorInterface $paginator, 
-                                private EntityManagerInterface $entityManager)
+                                private EntityManagerInterface $entityManager, 
+                                private EntityRolePermissionRepository $entityRolePermissionRepository)
     {
     }
     
@@ -55,7 +58,7 @@ class AdminRolePermissionController extends AbstractController
     public function manage()
     {
         $entities = scandir(dirname(__DIR__, 2) . "/Entity");
-        $entities = array_diff($entities, [".", "..", ".gitignore"]);
+        $entities = array_diff($entities, [".", "..", ".gitignore", "EntityRolePermission.php"]);
         $entityNames = [];
 
         foreach ($entities as $entity) {
@@ -66,9 +69,37 @@ class AdminRolePermissionController extends AbstractController
 
         $data = [
             "entityNames" => $entityNames,
-            "roles" => $roles
+            "roles" => $roles,
+            "entityRolePermissions" => $this->entityRolePermissionRepository->findAll()
         ];
 
-        return $this->render("admin/role_permission/list.html.twig", compact("data"));
+        return $this->render("admin/role_permission/list.html.twig", [
+            "data" => $data,
+        ]);
+    }
+
+    #[Route('/admin/role/permission/save', name: 'admin_role_permission_save', methods: ['POST'])]
+    public function save(Request $request)
+    {
+        $permissions = $request->request->all()["permission"] ?? [];
+
+        foreach ($permissions as $entityName => $role) {
+            foreach ($role as $roleName => $methods) {
+                $entity = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "roleName" => $roleName]) ?? new EntityRolePermission();
+                $entity->setEntityName($entityName);
+                $entity->setRoleName($roleName);
+
+                foreach (array_keys($methods) as $method) {
+                    $entity->$method(true);
+                    $this->entityRolePermissionRepository->save($entity, false);
+                }
+            }
+        }
+
+        $this->entityRolePermissionRepository->saveAll();
+
+        $this->addFlash("success", "La permission des rôles associées à des entités est modifié avec succès");
+
+        return $this->redirectToRoute("admin_role_permission_list");
     }
 }
