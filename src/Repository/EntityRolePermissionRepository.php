@@ -21,39 +21,16 @@ class EntityRolePermissionRepository extends ServiceEntityRepository
         parent::__construct($registry, EntityRolePermission::class);
     }
 
-    public function save(EntityRolePermission $entityRolePermission, bool $flush = false) {
-        $this->_em->persist($entityRolePermission);
-        if ($flush) {
-            $this->_em->flush();
-        }
+    public function reset() {
+        $this->createQueryBuilder("erp")
+                        ->update()
+                        ->set('erp.canAdd', ':value')
+                        ->set('erp.canEdit', ':value')
+                        ->set('erp.canView', ':value')
+                        ->set('erp.canDelete', ':value')
+                        ->setParameter('value', false)
+                        ->getQuery()
+                        ->execute();
+
     }
-
-    public function saveAll() {
-        $this->_em->flush();
-    }
-
-//    /**
-//     * @return EntityRolePermission[] Returns an array of EntityRolePermission objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('e.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?EntityRolePermission
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

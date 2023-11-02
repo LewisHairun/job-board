@@ -24,17 +24,16 @@
                 </tr>
 
                 <form action="{{ path("admin_role_permission_save") }}" method="POST">
-                {% for entityName in data["entityNames"] %}
+                {% for entityName, roles in data["entitiesData"] %}
                         <tr>
                             <td>{{ entityName }}</td>
                             <td>add</td>
-                            {% for role in data["roles"] %}
+                            {% for roleName, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ role }}][setCanAdd]" 
+                                            name="permission[{{ entityName }}][{{ roleName }}][setCanAdd]" 
                                             class="add-permission"
-                                            id="{{ "add-" ~ role ~ "-" ~ entityName }}"
-                                            {% if can(entityName, role) %}checked{% endif %}
+                                            {% if entity.canAdd %}checked{% endif %}
                                     > 
                                 </td>
                             {% endfor %}
@@ -42,13 +41,12 @@
                         <tr>
                             <td></td>
                             <td>edit</td>
-                            {% for role in data["roles"] %}
+                            {% for roleName, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ role }}][setCanEdit]" 
+                                            name="permission[{{ entityName }}][{{ roleName }}][setCanEdit]" 
                                             class="edit-permission"
-                                            id="{{ "edit-" ~ role ~ "-" ~ entityName }}"
-                                        {% if can(entityName, role) %}checked{% endif %}
+                                        {% if entity.canEdit %}checked{% endif %}
                                     >        
                                 </td>
                             {% endfor %}
@@ -56,13 +54,12 @@
                         <tr>
                             <td></td>
                             <td>view</td>
-                            {% for role in data["roles"] %}
+                            {% for roleName, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ role }}][setCanView]" 
+                                            name="permission[{{ entityName }}][{{ roleName }}][setCanView]" 
                                             class="view-permission"
-                                            id="{{ "view-" ~ role ~ "-" ~ entityName }}"
-                                        {% if can(entityName, role) %}checked{% endif %}
+                                        {% if entity.canView %}checked{% endif %}
                                     >
                                 </td>
                             {% endfor %}
@@ -70,13 +67,12 @@
                         <tr>
                             <td></td>
                             <td>delete</td>
-                            {% for role in data["roles"] %}
+                            {% for roleName, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ role }}][setCanDelete]" 
+                                            name="permission[{{ entityName }}][{{ roleName }}][setCanDelete]" 
                                             class="delete-permission"
-                                            id="{{ "delete-" ~ role ~ "-" ~ entityName }}"
-                                            {% if can(entityName, role) %}checked{% endif %}
+                                            {% if entity.canDelete %}checked{% endif %}
                                     >
                                 </td>
                             {% endfor %}

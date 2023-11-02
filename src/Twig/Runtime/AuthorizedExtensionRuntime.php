@@ -21,20 +21,20 @@ class AuthorizedExtensionRuntime implements RuntimeExtensionInterface
             return false;
         }
 
-        if (null !== $entityRolePermission->isCanAdd()) {
-            return true;
+        if (null !== $entityRolePermission->isCanAdd() || 0 !== $entityRolePermission->isCanAdd()) {
+            return $entityRolePermission->isCanAdd();
         }
 
-        if (null !== $entityRolePermission->isCanEdit()) {
-            return true;
+        if (null !== $entityRolePermission->isCanView() || 0 !== $entityRolePermission->isCanView()) {
+            return $entityRolePermission->isCanView();
         }
 
-        if (null !== $entityRolePermission->isCanEdit()) {
-            return true;
+        if (null !== $entityRolePermission->isCanEdit() || 0 !== $entityRolePermission->isCanEdit()) {
+            return $entityRolePermission->isCanEdit();
         }
 
-        if (null !== $entityRolePermission->isCanDelete()) {
-            return true;
+        if (null !== $entityRolePermission->isCanDelete() || 0 !== $entityRolePermission->isCanDelete()) {
+            return $entityRolePermission->isCanDelete();
         }
 
         return false;

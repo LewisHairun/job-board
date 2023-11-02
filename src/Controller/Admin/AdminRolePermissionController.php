@@ -59,18 +59,23 @@ class AdminRolePermissionController extends AbstractController
     {
         $entities = scandir(dirname(__DIR__, 2) . "/Entity");
         $entities = array_diff($entities, [".", "..", ".gitignore", "EntityRolePermission.php"]);
-        $entityNames = [];
-
-        foreach ($entities as $entity) {
-            $entityNames[] = substr($entity, 0, strrpos($entity, "."));
-        }
+        $entitiesData = [];
 
         $roles = $this->roleRepository->getRoleNames();
+        foreach ($entities as $entity) {
+            $entityName = substr($entity, 0, strrpos($entity, "."));
+
+            foreach ($roles as $roleName) {
+                $entityRolePermission = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "roleName" => $roleName]) ?? new EntityRolePermission();
+                $entityRolePermission->setEntityName($entityName);
+                $entityRolePermission->setRoleName($roleName);
+                $entitiesData[$entityName][$roleName] = $entityRolePermission;
+            }
+        }
 
         $data = [
-            "entityNames" => $entityNames,
+            "entitiesData" => $entitiesData,
             "roles" => $roles,
-            "entityRolePermissions" => $this->entityRolePermissionRepository->findAll()
         ];
 
         return $this->render("admin/role_permission/list.html.twig", [
@@ -83,20 +88,24 @@ class AdminRolePermissionController extends AbstractController
     {
         $permissions = $request->request->all()["permission"] ?? [];
 
+        $roles = $this->roleRepository->getRoleNames();
+        $this->entityRolePermissionRepository->reset();
+
         foreach ($permissions as $entityName => $role) {
             foreach ($role as $roleName => $methods) {
                 $entity = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "roleName" => $roleName]) ?? new EntityRolePermission();
                 $entity->setEntityName($entityName);
                 $entity->setRoleName($roleName);
+                $methodsChecked = array_keys($methods);
 
-                foreach (array_keys($methods) as $method) {
+                foreach ($methodsChecked as $method) {
                     $entity->$method(true);
-                    $this->entityRolePermissionRepository->save($entity, false);
+                    $this->entityManager->persist($entity);
                 }
             }
         }
 
-        $this->entityRolePermissionRepository->saveAll();
+        $this->entityManager->flush();
 
         $this->addFlash("success", "La permission des rôles associées à des entités est modifié avec succès");
 
