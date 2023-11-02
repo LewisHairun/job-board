@@ -18,7 +18,7 @@
                     <th></th>
                     {% for role in data["roles"] %}
                         <th>
-                            {{ role }}
+                            {{ role.name }}
                         </th>
                     {% endfor %}
                 </tr>
@@ -28,10 +28,10 @@
                         <tr>
                             <td>{{ entityName }}</td>
                             <td>add</td>
-                            {% for roleName, entity in roles %}
+                            {% for roleId, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ roleName }}][setCanAdd]" 
+                                            name="permission[{{ entityName }}][{{ roleId }}][setCanAdd]" 
                                             class="add-permission"
                                             {% if entity.canAdd %}checked{% endif %}
                                     > 
@@ -41,10 +41,10 @@
                         <tr>
                             <td></td>
                             <td>edit</td>
-                            {% for roleName, entity in roles %}
+                            {% for roleId, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ roleName }}][setCanEdit]" 
+                                            name="permission[{{ entityName }}][{{ roleId }}][setCanEdit]" 
                                             class="edit-permission"
                                         {% if entity.canEdit %}checked{% endif %}
                                     >        
@@ -54,10 +54,10 @@
                         <tr>
                             <td></td>
                             <td>view</td>
-                            {% for roleName, entity in roles %}
+                            {% for roleId, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ roleName }}][setCanView]" 
+                                            name="permission[{{ entityName }}][{{ roleId }}][setCanView]" 
                                             class="view-permission"
                                         {% if entity.canView %}checked{% endif %}
                                     >
@@ -67,10 +67,10 @@
                         <tr>
                             <td></td>
                             <td>delete</td>
-                            {% for roleName, entity in roles %}
+                            {% for roleId, entity in roles %}
                                 <td>
                                     <input type="checkbox" 
-                                            name="permission[{{ entityName }}][{{ roleName }}][setCanDelete]" 
+                                            name="permission[{{ entityName }}][{{ roleId }}][setCanDelete]" 
                                             class="delete-permission"
                                             {% if entity.canDelete %}checked{% endif %}
                                     >

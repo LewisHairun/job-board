@@ -28,8 +28,9 @@ class EntityRolePermission
     #[ORM\Column(nullable: true)]
     private ?bool $canDelete = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $roleName = null;
+    #[ORM\ManyToOne(inversedBy: 'entityRolePermissions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Role $role = null;
 
     public function getId(): ?int
     {
@@ -96,14 +97,14 @@ class EntityRolePermission
         return $this;
     }
 
-    public function getRoleName(): ?string
+    public function getRole(): ?Role
     {
-        return $this->roleName;
+        return $this->role;
     }
 
-    public function setRoleName(?string $roleName): static
+    public function setRole(?Role $role): static
     {
-        $this->roleName = $roleName;
+        $this->role = $role;
 
         return $this;
     }

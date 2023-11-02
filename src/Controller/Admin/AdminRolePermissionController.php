@@ -61,15 +61,16 @@ class AdminRolePermissionController extends AbstractController
         $entities = array_diff($entities, [".", "..", ".gitignore", "EntityRolePermission.php"]);
         $entitiesData = [];
 
-        $roles = $this->roleRepository->getRoleNames();
+        $roles = $this->roleRepository->findAll();
+
         foreach ($entities as $entity) {
             $entityName = substr($entity, 0, strrpos($entity, "."));
 
-            foreach ($roles as $roleName) {
-                $entityRolePermission = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "roleName" => $roleName]) ?? new EntityRolePermission();
+            foreach ($roles as $role) {
+                $entityRolePermission = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "role" => $role]) ?? new EntityRolePermission();
                 $entityRolePermission->setEntityName($entityName);
-                $entityRolePermission->setRoleName($roleName);
-                $entitiesData[$entityName][$roleName] = $entityRolePermission;
+                $entityRolePermission->setRole($role);
+                $entitiesData[$entityName][$role->getId()] = $entityRolePermission;
             }
         }
 
@@ -88,14 +89,14 @@ class AdminRolePermissionController extends AbstractController
     {
         $permissions = $request->request->all()["permission"] ?? [];
 
-        $roles = $this->roleRepository->getRoleNames();
         $this->entityRolePermissionRepository->reset();
 
-        foreach ($permissions as $entityName => $role) {
-            foreach ($role as $roleName => $methods) {
-                $entity = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "roleName" => $roleName]) ?? new EntityRolePermission();
+        foreach ($permissions as $entityName => $rolesId) {
+            foreach ($rolesId as $roleId => $methods) {
+                $role = $this->roleRepository->find($roleId);
+                $entity = $this->entityRolePermissionRepository->findOneBy(["entityName" => $entityName, "role" => $role]) ?? new EntityRolePermission();
                 $entity->setEntityName($entityName);
-                $entity->setRoleName($roleName);
+                $entity->setRole($role);
                 $methodsChecked = array_keys($methods);
 
                 foreach ($methodsChecked as $method) {
