@@ -49,6 +49,10 @@ class EntityRolePermissionVoter extends Voter
         /** @var EntityRolePermission $entityRolePermission */
         $entityRolePermission = $this->entityRolePermissionRepository->findOneBy(["role" => $role, "entityName" => $entityName]);
 
+        if (null === $entityRolePermission ) {
+            return false;
+        }
+
         $method = "isCan$attribute";
 
         return (bool) $entityRolePermission->$method();
