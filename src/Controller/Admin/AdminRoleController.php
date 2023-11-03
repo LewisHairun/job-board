@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Role;
 use App\Form\RoleType;
 use App\Repository\RoleRepository;
+use App\Security\Voter\EntityRolePermissionVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,6 +40,8 @@ class AdminRoleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted(EntityRolePermissionVoter::ADD, $role);
+
             $entityManager->persist($role);
             $entityManager->flush();
 
@@ -60,6 +63,7 @@ class AdminRoleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->denyAccessUnlessGranted(EntityRolePermissionVoter::EDIT, $role);
             $entityManager->flush();
 
             $this->addFlash("success", "Le rôle est modifié avec succès");
@@ -77,6 +81,7 @@ class AdminRoleController extends AbstractController
     public function delete(Request $request, Role $role, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$role->getId(), $request->request->get('_token'))) {
+            $this->denyAccessUnlessGranted(EntityRolePermissionVoter::DELETE, $role);
             $entityManager->remove($role);
             $entityManager->flush();
         }
