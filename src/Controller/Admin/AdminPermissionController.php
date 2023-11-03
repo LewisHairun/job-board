@@ -7,7 +7,9 @@ use App\Form\PermissionType;
 use App\Repository\PermissionRepository;
 use App\Security\Voter\EntityRolePermissionVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Knp\Component\Pager\PaginatorInterface;
+use LogicException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,7 +64,11 @@ class AdminPermissionController extends AbstractController
         $form->handleRequest($request);
         $isAuthorized = $this->denyAccessUnlessGranted(EntityRolePermissionVoter::EDIT, $permission);
 
-        if ($isAuthorized && $form->isSubmitted() && $form->isValid()) {
+        if (!$isAuthorized) {
+            throw new LogicException("Access Denied");
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager->flush();
 
