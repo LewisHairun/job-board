@@ -60,9 +60,10 @@ class AdminPermissionController extends AbstractController
     {
         $form = $this->createForm(PermissionType::class, $permission);
         $form->handleRequest($request);
+        $isAuthorized = $this->denyAccessUnlessGranted(EntityRolePermissionVoter::EDIT, $permission);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->denyAccessUnlessGranted(EntityRolePermissionVoter::EDIT, $permission);
+        if ($isAuthorized && $form->isSubmitted() && $form->isValid()) {
+
             $entityManager->flush();
 
             $this->addFlash("success", "La permission est modifié avec succès");
